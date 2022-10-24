@@ -1,0 +1,16 @@
+public class Main {
+    public static void main(String[] args) {
+        String myString = "This is a string";
+        System.out.println(myString);
+
+        myString = myString + "...and so is this \u00AE";
+
+        System.out.println(myString);
+
+        String lastString = "10";
+
+        int myInt = 50;
+
+        System.out.println(myInt + lastString);
+    }
+}
