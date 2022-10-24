@@ -1,0 +1,15 @@
+public class Main {
+    public static void main(String[] args) {
+
+        char myChar = 'r';
+        char myUnicodeChar = '\u0040';
+
+        System.out.println(myChar);
+        System.out.println(myUnicodeChar);
+
+
+        boolean myTrueBooleanValue = true;
+        boolean myFalseBooleanValue = false;
+
+    }
+}
