@@ -6,13 +6,22 @@ An introductory guide into Python
  * [Section 1 - Java Programme Structure](#section-1---java-programme-structure)
    * [The Programme Container](#the-programme-container)
    * [The Main Method](#the-main-method)
-  * [Section 2 - Variables](#section-2---variables)
+ * [Section 2 - Variables](#section-2---variables)
    * [Data Types](#data-types)
    * [The Main Method](#the-main-method)
-  * [Section 3 - Operators](#section-3---operators)
+ * [Section 3 - Operators](#section-3---operators)
+   * [Arithmetic Operators](#arithmetic-operators)
    * [Assignment Operators](#assignment-operators)
    * [Comparison Operators](#comparison-operators)
    * [Logical Operators](#logical-operators)
+   * [Conditional Operator](#conditional-operator)
+ * [Section 4 - Conditional Statements](#section-4---conditional-statements)
+   * [if Statements](#if-statements) 
+   * [else Statements](#else-statements)
+   * [else if Statements](#else-if-statements)
+   * [switch Statements](#switch-statements)
+
+
  
  ## Section 1 - Java Programme Structure
  
@@ -116,6 +125,192 @@ The class names should always begin with an uppercase letter as shown below:
  
  ## Section 3 - Operators
  
+ 
+  Operators are used to perform operations on variables and their are four types:
+ * Arithmetic
+ * Assignment
+ * Comparison
+ * Logical 
+
+ #### Arithmetic Operators
+ 
+ Used to create expressions in Java programmes and perform common mathematical operations
+
+ |Operator|Name| Description|
+ | :-:|:-:|:-:|
+ |+| Addition| Adds two values. Also used to concatenate String values|
+ |-| Subtraction| Subtracts two values|
+ |* | Multiplication| Multiplies two values|
+ |/| Division | Divides one value by another|
+ |%| Modulus | Returns the remainder of a division operation| 
+ |++| Increment| Increases the value of a variable by 1|
+ |--| Decrement|Decreases the value of a variable by 1|
+ 
  ### Assignment Operators
+ 
+ Used to assign the result of an expression. There are also shorthand versions of longer equivalent expressions:
+ 
+ |Operator|Example| Equivalent |
+ | :-:|:-:|:-:|
+ |=| a = b| a = b|
+ |+=| a += b| a = a + b |
+ |-= | a -= b| a = a - b|
+ | *= | a *= b | a = a * b|
+ | /= | a /= b | a = a / b| 
+ | %= | a %= b| a = a % b|
+
  ### Comparison Operators
+ 
+ Comparisson operators are used to compare two values in an expression and return a boolean value of true or false.
+ 
+ |Operator|Comparison|
+ | :-:|:-:|
+ |== | Equality|
+ | != | Inequality |
+ |>| Greater than|
+ | >=| Greater than, or equal to | 
+ | < | Less than | 
+ | <= | Less than, or equal to|
+ 
  ### Logical Operators
+
+Logical operators are used to combine multiple expressions that each return a boolean value, into a complex expression that returns a single boolean value.
+
+ |Operator|Operation|
+ | :-:|:-:|
+ | && | Logical AND|
+ | || | Logical OR |
+ |!| Logical NOT|
+
+### Conditional Operator
+
+The Tenary Operator evaluates an expression for a true or false value and returns one of the given operands depending on the result. It's syntax looks like this:
+
+( boolean-expression ) ? if-true-return-this : if-false-return-this;
+
+An example can be seen below:
+
+ ```java
+ class Main 
+ {
+  public static void main (String [] args){ 
+  
+ int age = 21;
+ 
+ boolean isAdult = (age > 18) ? true : false;
+ // isAdult resolves to true
+  }
+ }
+ ```
+
+## Section 4 - Conditional Statements
+
+### if Statements 
+
+The 'if' statement performs a conditional test to evaluate an expression for a boolean value. The statements following the expression will only be executed when the expression is true. The if statement syntax cam be seen below:
+
+if (test-expression) code-to-be-executed-when-true:
+
+An Example can be seen below:
+
+ ```java
+ class Main 
+ {
+  public static void main (String [] args){ 
+  
+    if (2 > 1){
+       System.out.println("Five is greater than one")
+    }
+  }
+ }
+ ```
+ 
+### else Statements
+
+The 'else' statement is used in conjunction with the "if" keyword to create "if else" statements. This creates alternative branches for a program to pusue according to the evaluation of the tested expression. This enables an alternative statement to be executed when the first statement fails:
+
+```java
+ class Main 
+ {
+  public static void main (String [] args){ 
+  
+    int hours = 11;
+
+    if (hours <= 12){
+     System.print.ln("It is morning") 
+    }
+    else {
+     System.print.ln("It is no longer morning") 
+    }
+  }
+ }
+
+```
+
+### else if Statements
+
+Else If Statements
+The 'else if' operator used to specify a new condition to test, if the first condition is false.
+
+ 
+ ```java
+ class Main 
+ {
+  public static void main (String [] args){ 
+  
+    int hours = 11;
+
+    if (hours <= 12){
+     System.print.ln("Good morning") 
+    } else if (hours < 18){
+     System.print.ln("Good afternoon") 
+    } else {
+      System.print.ln("Good evening") 
+    }
+   }
+ }
+
+```
+
+### switch Statements
+
+A 'switch' statement is used to specify many alternative blocks of code to be executed. It evaluates a statement once and compares the output of the expression against each 'case'. If the output matches a case then its corresponding code block will be run. An example can be seen below:
+
+```java
+ class Main 
+ {
+  public static void main (String [] args){ 
+  
+    int day = 2;
+        switch (day) {
+            case 1:
+                System.out.println("Monday");
+                break; // used to signify end of case
+            case 2:
+                System.out.println("Tuesday"); // print Tuesday as the day number is 2
+                break;
+            case 3:
+                System.out.println("Wednesday");
+                break;
+            case 4:
+                System.out.println("Thursday");
+                break;
+            case 5:
+                System.out.println("Friday");
+                break;
+            case 6:
+                System.out.println("Saturday");
+                break;
+            case 7:
+                System.out.println("Sunday");
+                break;
+            default: // triggers when the input doesn't match any case
+                System.out.println("Sorry that's not a valid input");
+        }
+    }
+}
+        
+```
+
+A more detailed example on operators & conditional statements can be found [here](ConditionalStatements/IfThenStatements)
+
