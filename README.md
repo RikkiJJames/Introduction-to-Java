@@ -6,8 +6,13 @@ An introductory guide into Python
  * [Section 1 - Java Programme Structure](#section-1---java-programme-structure)
    * [The Programme Container](#the-programme-container)
    * [The Main Method](#the-main-method)
+   * [Comments](#comments)
+     * [Single Line Comments](#single-line-comments) 
+     * [Multiple Line Comments](#multiple-line-comments) 
  * [Section 2 - Variables](#section-2---variables)
    * [Data Types](#data-types)
+   * [Defining Variables](#defining-variables)
+   * [Defining Constants](#defining-constants)
    * [The Main Method](#the-main-method)
  * [Section 3 - Operators](#section-3---operators)
    * [Arithmetic Operators](#arithmetic-operators)
@@ -15,11 +20,20 @@ An introductory guide into Python
    * [Comparison Operators](#comparison-operators)
    * [Logical Operators](#logical-operators)
    * [Conditional Operator](#conditional-operator)
- * [Section 4 - Conditional Statements](#section-4---conditional-statements)
-   * [if Statements](#if-statements) 
-   * [else Statements](#else-statements)
-   * [else if Statements](#else-if-statements)
-   * [switch Statements](#switch-statements)
+ * [Section 4 - Control Flow](#section-4---control-flow)
+   * [Conditional Statements](#conditional-statements)
+     * [if Statements](#if-statements) 
+     * [else Statements](#else-statements)
+     * [else if Statements](#else-if-statements)
+     * [switch Statements](#switch-statements)
+   * [Loops](#loops)
+     * [for Loops](#for-loops)
+     * [while Loops](#while-loops)
+     * [do while Loops](#do-while-loops)
+     * [Breaking Out of Loops](#breaking-out-of-loops)
+       * [break](#break)
+       * [continue](#continue) 
+
 
 
  
@@ -60,6 +74,40 @@ The class names should always begin with an uppercase letter as shown below:
  }
  ```
  
+ ### Comments
+ 
+ When programming in any language it is good practice to add comments to explain each section. This makes the code more easily underrstood by other and yourself when revisiting code.
+ 
+ #### Single Line Comments
+ 
+Single Line comments can be added using the following syntax.
+
+```java
+ class Main 
+ {
+  public static void main (String [] args){ 
+  // This is a comment
+  }
+ }
+ ```
+ 
+ 
+ #### Multiple Line Comments
+ 
+ Single Line comments can be added using the following syntax.
+ 
+ ```java
+ class Main 
+ {
+  public static void main (String [] args){ 
+  /* This is a 
+  Multi Line
+  Comment
+  */
+  }
+ }
+ ```
+ 
   ## Section 2 - Variables
   
   A variable is a container that stores a value. Variables are created by specifying the type of data being stored and then a name for that variable.
@@ -91,6 +139,22 @@ The class names should always begin with an uppercase letter as shown below:
   int myValue = 10_000
   System.out.println(myValue)
   // Prints 10000
+  }
+ }
+ ```
+ 
+ ### Defining Constants
+ 
+ The "final" keyword is a modifier that can be used to prevent any changes to the values initially assigned to them. This is useful when storing a fixed value in a program to avoid it being accidentally altered.
+ The convention is to name constants in all uppercase characters to distinguish them from regular variables. See below:
+ 
+  ```java
+ class Main 
+ {
+  public static void main (String [] args){ 
+  
+  final double PI = 3.14159265359d;
+  final double EULER = 2.71828;
   }
  }
  ```
@@ -203,9 +267,11 @@ An example can be seen below:
  }
  ```
 
-## Section 4 - Conditional Statements
+## Section 4 - Control Flow
 
-### if Statements 
+### Conditional Statements
+
+#### if Statements 
 
 The 'if' statement performs a conditional test to evaluate an expression for a boolean value. The statements following the expression will only be executed when the expression is true. The if statement syntax cam be seen below:
 
@@ -225,7 +291,7 @@ An Example can be seen below:
  }
  ```
  
-### else Statements
+#### else Statements
 
 The 'else' statement is used in conjunction with the "if" keyword to create "if else" statements. This creates alternative branches for a program to pusue according to the evaluation of the tested expression. This enables an alternative statement to be executed when the first statement fails:
 
@@ -244,10 +310,9 @@ The 'else' statement is used in conjunction with the "if" keyword to create "if 
     }
   }
  }
-
 ```
 
-### else if Statements
+#### else if Statements
 
 Else If Statements
 The 'else if' operator used to specify a new condition to test, if the first condition is false.
@@ -272,7 +337,7 @@ The 'else if' operator used to specify a new condition to test, if the first con
 
 ```
 
-### switch Statements
+#### switch Statements
 
 A 'switch' statement is used to specify many alternative blocks of code to be executed. It evaluates a statement once and compares the output of the expression against each 'case'. If the output matches a case then its corresponding code block will be run. An example can be seen below:
 
@@ -313,4 +378,132 @@ A 'switch' statement is used to specify many alternative blocks of code to be ex
 ```
 
 A more detailed example on operators & conditional statements can be found [here](ConditionalStatements/IfThenStatements)
+
+### Loops
+
+A loop is a block of code that repeatedly executes the statement it contains until a tested condition is met.
+#### for Loops
+
+The most frequently used loop structure is the "for" loop which has the syntax below:
+
+for ( initialiser; test-expression; updater )
+{
+  statements-to-be-executed-on-each-iteration;
+}
+
+The for loop must contain three parameters to control the loop
+
+* Initialiser - assigns an initial value to a counter variable, which will track the number of iterations.
+* Test expression - evaluated at the start of each iteration. When the evaluation returns true, the iteration proceeds. Else the loop is terminated
+* Updater - changes the current value of the counter variable, started by the initialiser. Typically this will use i++ fir counting upm or i-- for counting down.
+
+```java
+ class Main 
+ {
+  public static void main (String [] args){ 
+  
+    for (int i = 1; i < 11; i++){
+        System.out.println(i);
+    }
+    // Prints out 1 - 10
+  }
+ }
+```
+
+#### while Loops
+
+An alternative to the for loop is the "while" loop, which has the syntax below:
+
+while( test-expression )
+{
+    statements-to-be-executed-on-each-iteration;
+}
+
+Unlike the "for" loop the while loop does not contain an initialiser or updater. This means the test expression must evaluate a value that gets changed in the loop statements as the loop proceeds. Otherwise an infinite loop will be created. See below:
+
+```java
+public class Main {
+    public static void main(String[] args) {
+
+        int i = 1;
+        while(i < 11){
+            System.out.println(i);
+            i++;
+        }
+    }
+}
+```
+
+#### do while Loops
+
+A variation of the "while" loop is the "do while" loop. This is created with the following syntax:
+
+do 
+{
+    statements-to-be-executed-on-each-iteration;
+} 
+while (test-expression);
+
+Like the "for" and "while" loops, a "do while" loop repeatedly executes the statemetns until the test-expression returns false. However, unlike the "while" loop. The test statement is only evaluatied at the end of each iteration. Therefore the loop is always executed at least once.
+
+```java
+public class Main {
+    public static void main(String[] args) {
+
+        int count = 1;
+        do {
+            System.out.println("Value is :" + count);
+            count++;
+        } while (count < 11);
+        // Prints out 1 - 10. Always prints out initial value.
+    }
+}
+```
+
+#### Breaking Out of Loops
+
+##### break
+The "break" keyword can be used to prematurely terminate a loop once a specified condition is met. When a loop in a nested loop is broken out of it proceeds to the next iteration of its outer loop.
+
+```java
+public class Main {
+    public static void main(String[] args) {
+        int count = 0;
+
+        while (count < 10){
+            System.out.println(count);
+            count++;
+            if (count == 4){
+                System.out.println("Breaking out of loop");
+                break;
+            }
+        }
+    }
+}
+```
+
+##### continue
+
+The "continue" keyword can be used to skip a single iteration of a loop when a specified condition is met.
+
+```java
+public class Main {
+    public static void main(String[] args) {
+
+        int count = 0;
+
+        while (count < 11){
+            count++;
+            if (count % 2 != 0) {
+                continue;
+            }
+            System.out.println(count);
+            // Prints even numbers
+        }
+    }
+}
+
+```
+
+
 
