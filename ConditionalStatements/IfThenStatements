@@ -1,0 +1,87 @@
+public class Main {
+    public static void main(String[] args) {
+
+
+        boolean isAlien = false;
+
+        /*
+        if (isAlien == false){
+            System.out.println("Not an alien");
+        }
+        Is rewritten below
+        */
+
+        if (!isAlien){
+            System.out.println("Not an alien");
+        } else {
+            System.out.println("Is an alien");
+        }
+
+        int topScore = 80;
+
+        if (topScore != 100){
+            System.out.println("You didn't get the high score");
+        } else {
+            System.out.println("You got the top score");
+        }
+
+        int secondTopScore = 60;
+
+        if ((topScore > secondTopScore) && (topScore < 100)){
+            System.out.println("Greater than second top score and less than 100");
+        }
+
+        secondTopScore = 81;
+        if ((topScore > 90) || (secondTopScore <= 90)){
+            System.out.println("Either or both of the scores are true");
+        }
+
+        int age = 21;
+        boolean isAdult = (age > 18) ? true : false;
+
+        if (isAdult){
+            System.out.println("Age is over 18");
+        } else {
+            System.out.println("Age is less than 18");
+        }
+
+        age = 10;
+
+        if (age < 13){
+            System.out.println("You are a child");
+        } else if (age < 18) {
+            System.out.println("You are a teenager");
+        } else {
+            System.out.println("You are an adult");
+        }
+
+        // Rewriting using switch
+
+        int day = 2;
+        switch (day) {
+            case 1:
+                System.out.println("Monday");
+                break; // used to signify end of case
+            case 2:
+                System.out.println("Tuesday"); // print Tuesday as the day number is 2
+                break;
+            case 3:
+                System.out.println("Wednesday");
+                break;
+            case 4:
+                System.out.println("Thursday");
+                break;
+            case 5:
+                System.out.println("Friday");
+                break;
+            case 6:
+                System.out.println("Saturday");
+                break;
+            case 7:
+                System.out.println("Sunday");
+                break;
+            default: // triggers when the input doesn't match any case
+                System.out.println("Sorry that's not a valid input");
+        }
+    }
+}
