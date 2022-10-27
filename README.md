@@ -32,8 +32,11 @@ An introductory guide into Python
      * [do while Loops](#do-while-loops)
      * [Breaking Out of Loops](#breaking-out-of-loops)
        * [break](#break)
-       * [continue](#continue) 
-
+       * [continue](#continue)
+ * [Section 5 - Methods](#section-5---methods)
+   * [Returning Parameters](#returning-parameters)
+   * [Overloading Methods](#overloading-methods)
+ * [Section 6 - Classes](#section-6---classes)
 
 
  
@@ -505,5 +508,69 @@ public class Main {
 
 ```
 
+## Section 5 - Methods
 
+Programmes are typically split into seperate methods to create modules of code that each perform set tasks and can be called repeatedly throughout the programme as required.
+
+After  the main method, more methods can be declared inside the curly brackets that define the class definition. Each new method must be given a new name. The syntax is shown below:
+
+public static void secondMethod ( method-arguments ){ code-to-be-executed }
+
+### Returning Parameters
+
+When defining a method you may wish for it to return a value. This can be done with the third keyword in the method declaration. "void" means the function does not return anything. However this can be substituted with any data type. For instance the method "calculateScore" below returns an integer.
+
+```java
+public class Main {
+    public static void main(String[] args) {
+
+        boolean gameOver = true;
+        int score = 10, levelCompleted = 2, bonus = 100;
+
+        int highScore = calculateScore(gameOver, score, levelCompleted, bonus);
+
+    }
+
+    public static int calculateScore(boolean gameOver, int score, int levelCompleted, int bonus){
+
+        if (gameOver){
+            int finalScore = score +(levelCompleted * bonus);
+            return finalScore;
+        }
+
+        return -1;
+    }
+
+
+```
+### Overloading Methods
+
+A class may contain multiple methods of the same name provided they have different a different number of arguments, or arguments of different data types. This is known as overloading. An example can be seen below:
+
+```java
+public class Main {
+    public static void main(String[] args) {
+        print(7);
+        print(7, 3);
+        print("Hello World");
+    }
+
+    public static void print(int value){
+        System.out.println("Printing..." + value);
+    }
+
+    public static void print(int value1, int value2){
+        System.out.println("Printing..." + value1 + " " + value2);
+    }
+    public static void print(String value){
+        System.out.println("Printing..." + value);
+    }
+}
+```
+
+## Section 6 - Classes
+
+### Private Variables
+
+### Setters & Getters
 
