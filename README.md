@@ -570,7 +570,48 @@ public class Main {
 
 ## Section 6 - Classes
 
-### Private Variables
+Java uses OOP (Onject Orientated Programming) which is a technique to model objects that contain both data and code. The building block of Java that leads to Object-Oriented programming is a 'class' which describes the data (fields) and behaviour (methods) that are relevant to the object being described. Class members can be a field, method or any dependent element. If a field is static, there is only one copy in memory, and this value is associated with the class itself. If a field is not static, it is an instance field, and each object may have a different value stored for this field. A class is like a blueprint for an object and when an object is created, it inherits all the variables and functions from the class.
+
+For example: in real life, a car is an object. The car has attributes, such as weight and color, and methods, such as drive and brake.
+
+A class member. OOP has several advantages over procedural programming:
+
+* OOP is faster and easier to execute
+* OOP provides a clear structure for the programs
+* OOP helps to prevent code repition and makes the code easier to maintain, modify and debug
+* OOP makes it possible to create full reusable applications with less code and shorter development time
+
+### Creating Classes
+
+To create a class in Java, The syntax is to use the 'class' keyword with the class name having a capital letter, as shown below:
+
+```java
+public class Car {
+}
+
+```
+
+### Packages
+
+Classes can be organised into logical groupings called packages. You declare a package name in the class using the package statements. If no package is declared, the class implicitly belongs to the default package.
+
+### Access Modifiers
+
+There are many access modifiers that control where the class can be accessed from
+
+ | Access Keyword | Description |
+ |    :-:    |     :-:     |
+ |       | When no modifier is specified, package access is granted and the class is accessible to classes in the same package |
+ |    public   | any other class in any package can access this class |
+ |  private  | No other class can access this member |
+ 
+
+### Encapsulation
+
+Encapsulation in OOP has two meanings. One is bundling behaviour and attributes into a single object. The other is the practice of hiding fields and methods from public access. Usually the meaning is the latter.
+
+
+### Constructors
 
 ### Setters & Getters
 
