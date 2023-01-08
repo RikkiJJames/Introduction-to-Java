@@ -594,8 +594,13 @@ public class Car {
 ### Packages
 
 Classes can be organised into logical groupings called packages. You declare a package name in the class using the package statements. If no package is declared, the class implicitly belongs to the default package.
+ 
 
-### Access Modifiers
+### Encapsulation
+
+Encapsulation in OOP has two meanings. One is bundling behaviour and attributes into a single object. The other is the practice of hiding fields and methods from public access. Usually the meaning is the latter and the method of doing this is using access modifiers.
+
+#### Access Modifiers
 
 There are many access modifiers that control where the class can be accessed from
 
@@ -604,14 +609,87 @@ There are many access modifiers that control where the class can be accessed fro
  |       | When no modifier is specified, package access is granted and the class is accessible to classes in the same package |
  |    public   | any other class in any package can access this class |
  |  private  | No other class can access this member |
- 
 
-### Encapsulation
+### Class Fields
 
-Encapsulation in OOP has two meanings. One is bundling behaviour and attributes into a single object. The other is the practice of hiding fields and methods from public access. Usually the meaning is the latter.
+Class fields are variables that are specific to the class and defined in the code block as opposed to inside a method. When an object is created from the class, the values assigned to these fields represent the state of the object. Unlike local variables, class variables should have some type of access modifier declared for it. If not Java will declare the default (package private) implicitly. Below is an example of a car class with its field all having private access:
+
+```java
+public class Car {
+
+    private String make;
+    private String model;
+    private String colour;
+    private int doors;
+    private boolean convertible;
 
 
-### Constructors
+}
+```
 
-### Setters & Getters
+#### Default Values
 
+Class fields can be given default values as shown below:
+
+```java
+public class Car {
+
+    private String make = "BMW";
+    private String model = "Model 3";
+    private String colour = "Grey";
+    private int doors = 2;
+    private boolean convertible = false;
+}
+```
+This means that every object that gets instantiated will have these as default values.
+
+
+
+### Class Methods
+
+Class methods are first defined using the access modifier, return type and user given name. This is then followed by parenthesis in which you'd specify the type and name of any method arguments and then enclose the method code within curly brackets. The method below prints out the details from the car class defined above:
+
+```java
+public void describeCar(){
+        System.out.println(doors + "-Door " +
+                colour + " " +
+                make + " " +
+                model + " " +
+                (convertible ? "Convertable" : " "));
+
+}
+
+```
+The access modifier is public, which means it can be called from other classes such as "Main" and the return type is void. Which means it doesn't return anything.
+
+#### Constructors
+
+A class is just a template. To create an object (instance) of a class, you need a constructor. 
+
+Car car = new Car();
+car.desribeCar();
+
+#### Setters & Getters
+
+A setter is a method on a class that sets the value of a private field.
+A getter is a method on a class that retrieves the value of a private field.
+
+The purpose of these methods is to control, and protect, access to private fields.
+
+An example to get and set the "make" field of the car class is shown below:
+
+```java
+    public String getMake(){
+        return make;
+    }
+    
+    public void setMake(String make) {
+        this.make = make;
+    }
+```
+
+Note - In IntelliJ alt+insert can be used to quickly create setters & getters 
+
+##### this keyword
+
+In the earlier example. The "this" keyword was used used in the setter method. The this keyword refers to the instance that was created when the object was instantiated. So "this" is a special reference name for the object or instance, which it can use to describe itself. and it can be used to access fields on the class.
