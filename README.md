@@ -662,12 +662,6 @@ public void describeCar(){
 ```
 The access modifier is public, which means it can be called from other classes such as "Main" and the return type is void. Which means it doesn't return anything.
 
-#### Constructors
-
-A class is just a template. To create an object (instance) of a class, you need a constructor. 
-
-Car car = new Car();
-car.desribeCar();
 
 #### Setters & Getters
 
@@ -690,6 +684,123 @@ An example to get and set the "make" field of the car class is shown below:
 
 Note - In IntelliJ alt+insert can be used to quickly create setters & getters 
 
+Setters also allow validation. The example below only allows 3 OEM's to be accepted in the setMake method, if the argument passed in is anything else. The make is set to "Unsupported"
+
+```java
+public void setMake(String make) {
+
+        if (make == null){
+            make = "Unknown";
+        }
+        String lowercaseMake = make.toLowerCase();
+        switch (lowercaseMake){
+            case "mazda":
+            case "mitsubishi":
+            case "toyota":
+                this.make = make;
+                break;
+            default:
+                this.make = "Unsupported";
+        }
+    }
+```
+
 ##### this keyword
 
 In the earlier example. The "this" keyword was used used in the setter method. The this keyword refers to the instance that was created when the object was instantiated. So "this" is a special reference name for the object or instance, which it can use to describe itself. and it can be used to access fields on the class.
+
+#### Constructors
+
+A class is just a template. To create an object (instance) of a class, you need a constructor. This is a special type of code block that has a specific name and parameters just like a method. It has the same name as the class itself and doesn't return any values. You never include a return value from a constructor, not even void. You can, and should also specify the access modifier, to control who should be able to create new instances of the class.
+
+```java
+public class Car{ // Class declaration
+    public Car(){ // Constructor declaration
+    }
+}
+```
+
+If no constructor is declared. The Java implicitly creates a constructor. However, if a class contains any other constructor declarations, then a default constructor is NOT implicitly declared.
+
+```java
+Car car = new Car(); // Default constructor
+car.desribeCar();
+```
+
+From here you can call the setters discussed previously to assign the fields of the car class.
+
+```java
+public static void main(String[] args) {
+        Car firstCar = new Car();
+        firstCar.setMake("Mazda");
+        firstCar.setModel("3");
+        firstCar.setDoors(4);
+        firstCar.setColour("Black");
+        firstCar.setConvertible(false);
+    }
+```
+
+Instead of setting all of the fields individually. The constructor can be used to set all the fields by passing them in as arguments to the constructor:
+
+```java
+public Car(String make, String model, String colour, int doors, boolean convertible) {
+        this.make = make;
+        this.model = model;
+        this.colour = colour;
+        this.doors = doors;
+        this.convertible = convertible;
+    }
+
+```
+
+##### Constructor Overloading
+
+Constructor overloading is declaring multiple constructors, with differeent formal parameters.
+The number of parameters can be different between constructors. Or if the number of parameters is the same between constructors, their types of order of the types much differ.
+
+```java
+public Car(String make, String model, String colour, int doors, boolean convertible) {
+        this.make = make;
+        this.model = model;
+        this.colour = colour;
+        this.doors = doors;
+        this.convertible = convertible;
+    }
+
+    public Car(String make, String model, String colour, int doors) { // Overloaded constructor
+        this.make = make;
+        this.model = model;
+        this.colour = colour;
+        this.doors = doors;
+        this.convertible = false;
+    }
+```
+
+##### Constructor Chaining
+
+Constructor chaining is when one constructor explictly calls another overloaded constructor. You can only call a constructor from another constructor.
+You must use the "this()" keyword to execute another constructor, passing it arguments if required. "this" must be the first executable statement, if it's used from another constructor.
+
+```java
+public Car(){
+        this("Jaguar","I-Pace","Grey", 4, false);
+        System.out.println("Empty constructor called, default values used");
+    }
+
+    public Car(String make, String model, String colour, int doors, boolean convertible) {
+        this.make = make;
+        this.model = model;
+        this.colour = colour;
+        this.doors = doors;
+        this.convertible = convertible;
+        System.out.println("Constructor with parameters called");
+    }
+```
+
+The result of the code above would be:
+
+* Constructor with parameters called
+* Empty constructor called, default values used
+
+### Reference vs Object vs Instance vs Class
+
