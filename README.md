@@ -37,8 +37,26 @@ An introductory guide into Python
    * [Returning Parameters](#returning-parameters)
    * [Overloading Methods](#overloading-methods)
  * [Section 6 - Classes](#section-6---classes)
-
-
+   * [Creating Classes](#creating-classes)
+   * [Packages](#packages)
+   * [Encapsulation](#encapsulation)
+     * [Access Modifiers](#access-modifiers)
+   * [Class Fields](#class-fields)
+     * [Default Values](#default-values)
+   * [Class Methods](#class-methods)
+     * [Setters & Getters](#setters--getters)
+       * [this Keyword](#this-keyword)
+     * [Constructors](#constructors)
+       * [Constructor Overloading](#constructor-overloading)
+       * [Constructor Chaining](#constructor-chaining)
+   * [Static vs Instance](#static-vs-instance)
+     * [Static variables](#static-variables)
+     * [Static Methods](#static-methods)
+     * [Instance variables](#instance-variables)
+     * [Instance Methods](#instance-methods)
+   * [Inheritance](#inheritance)
+     
+ 
  
  ## Section 1 - Java Programme Structure
  
@@ -643,8 +661,6 @@ public class Car {
 ```
 This means that every object that gets instantiated will have these as default values.
 
-
-
 ### Class Methods
 
 Class methods are first defined using the access modifier, return type and user given name. This is then followed by parenthesis in which you'd specify the type and name of any method arguments and then enclose the method code within curly brackets. The method below prints out the details from the car class defined above:
@@ -705,7 +721,7 @@ public void setMake(String make) {
     }
 ```
 
-##### this keyword
+##### this Keyword
 
 In the earlier example. The "this" keyword was used used in the setter method. The this keyword refers to the instance that was created when the object was instantiated. So "this" is a special reference name for the object or instance, which it can use to describe itself. and it can be used to access fields on the class.
 
@@ -802,5 +818,107 @@ The result of the code above would be:
 * Constructor with parameters called
 * Empty constructor called, default values used
 
-### Reference vs Object vs Instance vs Class
+### Static vs Instance
 
+#### Static Variables
+
+A static variable is declared using the keyword 'static'. Every instance of the class share the same static variable. Therefore - if a change is made to that variable, all other instances of that class will see the effect of the change. It is common practice to use the class name and not a reference variable to access a static variable. This makes it clear that the variable is shared with the class and not stored within the instance.
+
+```java
+class Dog {
+
+    static String genus = "Canis";
+
+    void printData() {
+        Dog d = new Dog();
+        System.out.println(d.genus); // Confusing
+        System.out.println(Dog.genus); // Clearer
+    }
+}
+```
+
+Also an instance isn't required to exist to access the value of a static variable.
+
+```java
+class Dog {
+
+    static String genus = "Canis";
+}
+
+class Main {
+    public static void main(String [] args){
+    System.out.orintln(Dog.genus); // No instance required to access static variable
+    }
+}
+```
+
+They can be used for:
+
+* Storing counters
+* Generating unique ids
+* Storing a constant value that doesn't change, like PI for example.
+* Creating and controlling access to a shared resource (database/log file)
+
+
+#### Static Methods
+
+Static methods are declared using the 'static' modifier. Static methods cannot access instance methods and instance variable directly. They're usually used for operations that don't require any data from an instance of the class (from 'this'). 
+
+Therefore inside a static method - you cannot used the 'this' keyword.
+
+Whenever you see a method that doesn;t use instance variables, that method should probably be declared as a static method.
+For example, 'main' is a static method, and it's called by the Java virtual matchine when it starts the Java application.
+
+```java
+
+class Calculator {
+    public static void printSum (int a, int b) {
+        System.out.println("sum = " + (a + b));
+    }
+}
+
+public class Main {
+
+    public static void main (String [] args) {
+        Calculator.printSum(5, 10); // Does not require an instance
+        printHello();
+    }
+    
+    public static void printHello(){
+        System.out.println("Hello");
+    } 
+}
+
+```
+
+#### Instance Variables
+
+Instance variables are also known as fields, or member variables and belong to a specific instance of a class.
+Each instance has it's own copy of an instance variable that can have a different value.
+
+#### Instance Methods
+
+Instance methods belong to an instance of a class. To use an instance method, an instance must be created from the class, usually by using the new keyword.
+
+Instance methods can access both static/instance variables and static/instance methods directly. 
+
+```java
+class Dog {
+
+    public void bark() {
+        System.out.println("woof");
+    }
+}
+
+class Main {
+    public static void main(String [] args){
+    
+    Dog rex = new Dog(); // Create instance
+    rex.bark(); // Call instance method
+    }
+}
+```
+
+### Inheritance
+
+Inheritance is a way to reuse code
