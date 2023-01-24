@@ -36,7 +36,15 @@ An introductory guide into Python
  * [Section 5 - Methods](#section-5---methods)
    * [Returning Parameters](#returning-parameters)
    * [Overloading Methods](#overloading-methods)
- * [Section 6 - Classes](#section-6---classes)
+ * [Section 6 - Strings](#section-6---strings)
+   * [String Manipulation](string-manipulation)
+     * [Print Formatting](#print-formatting)
+       * [Format Specifiers](#format-specifiers) 
+         * [Precision](#precision)  
+         * [Width](#width)  
+       * [String Formatting](#string-formatting)
+      * [Text Blocks](#text-blocks)
+ * [Section 7 - Classes](#section-7---classes)
    * [Creating Classes](#creating-classes)
    * [Packages](#packages)
    * [Encapsulation](#encapsulation)
@@ -55,9 +63,7 @@ An introductory guide into Python
      * [Instance variables](#instance-variables)
      * [Instance Methods](#instance-methods)
    * [Inheritance](#inheritance)
-     
- 
- 
+
  ## Section 1 - Java Programme Structure
  
  ### The Programme Container 
@@ -585,8 +591,463 @@ public class Main {
     }
 }
 ```
+## Section 6 - Strings
 
-## Section 6 - Classes
+
+Strings are objects that have over 60 methods available. The string is a sequence of characters, meaning its characters are ordered and indexed. The index starts at zero. The table below shows the indices above each character for the String "Hello World"
+
+ | Index | 0 | 1 |  2 | 3 |  4 | 5 |  6 | 7 |  8 | 9 |  10 |
+ |    :-:    |     :-:     |      :-:  |    :-:    |     :-:     |      :-:     |    :-:    |     :-:     |      :-:     | :-:     | :-:     | :-:     | 
+ |    Character  | H | e |  l | l |  o |  |  W | o |  r | l |  d |
+ 
+Characters can be identified through there position. "H" is at index 0 and "W" is at index 6. The length of the string is 11, but its last index is 10.
+
+String methods can be split into three categories:
+
+* String inspection methods - Provide info on Strings such as length & isEmpty
+* Method for comparing string values - Usually return a boolean values e.g. false if string are not equal
+* String Manipulation Methods - Transform one string value into another
+
+### String Inspection Methods
+
+| Method | Description |
+|    :-:    |     :-:     |
+|    length  | Returns the number of characters in the String|
+|    charAt  | Returns the character at the index passed as an argument|
+|    indexOf/lastIndexOf  | Returns an integer, representing the index in the sequence where the String of character passed can be located in the String|
+|    isEmpty  | Returns true if the length is zero|
+|    isBlank  | Returns true length is zero OR the string only contains whitespace characters (added in JDK 11)|
+
+Examples can be seen below:
+
+```java
+public class Main {
+    public static void main(String[] args) {
+        printInformation("Hello World");
+        printInformation("");
+        printInformation("\t \n");
+
+        String helloWorld = "Hello World";
+        System.out.printf("Index of r = %d %n", helloWorld.indexOf("r")); // prints 8
+        System.out.printf("Index of World = %d %n", helloWorld.indexOf("World")); // prints 6
+
+        System.out.printf("Index of l = %d %n", helloWorld.indexOf("l")); // prints 2
+        System.out.printf("Index of l = %d %n", helloWorld.lastIndexOf("l")); // prints 9
+
+        // Find second l
+
+        System.out.printf("Index of l = %d %n", helloWorld.indexOf("l",3)); // prints 3
+        System.out.printf("Index of l = %d %n", helloWorld.lastIndexOf("l",8)); // prints 3
+    }
+
+    public static void printInformation(String string) {
+        int length = string.length();
+        System.out.printf("Length = %d %n", length); // Prints length of String
+
+        if (string.isEmpty()) {
+            System.out.println("String is Empty"); //returns if length is zero and no blank space
+            return;
+        }
+
+        if (string.isBlank()){
+            System.out.println("String is Blank"); // returns if length is zero with blank space
+            return;
+        }
+
+        System.out.printf("First char = %c %n", string.charAt(0)); //%c character format specifier, prints first character
+
+        System.out.printf("Last char = %c %n", string.charAt(length - 1)); // prints last character
+    }
+}
+
+```
+
+
+### String Comparison Methods
+
+| Method | Description |
+|    :-:    |     :-:     |
+|    contentEquals  | Returns a boolean if the String's value is equal to the value of the argument passed. This method allows for arguments other than String, for any type that is a character sequence.|
+|    equals  | Returns a boolean if the String's value is equal to the value of the argument passed|
+|    equalsIgnoreCase  | Returns a boolean if the String's value is equal (ignoring case), to the value of the argument passed.|
+|    contains  | Returns a boolean if the String contains the argument passed.|
+|    endsWith/startsWith  | These return a boolean, and are much like the "contains" method, but more specific to the placement of the String |
+|    regionMatches  | Returns a boolean, if defined sub-regions are matched.|
+
+
+```java
+public class Main {
+    public static void main(String[] args) {
+
+        String helloWorld = "Hello World";
+
+        String helloWorldLower = helloWorld.toLowerCase(); //hello world
+
+        if (helloWorld.equals(helloWorldLower)) {
+            System.out.println("Values match exactly"); // Doesn't match exactly - no output
+        }
+
+        if (helloWorld.equalsIgnoreCase(helloWorldLower)) {
+            System.out.println("Values match ignoring case"); // Prints value
+        }
+
+        if (helloWorld.contentEquals("Hello World")) {
+            System.out.println("Values match exactly"); // Prints values match exactly
+        }
+
+        if (helloWorld.startsWith("Hello")) {
+            System.out.println("String starts with Hello"); // Prints 
+        }
+
+        if (helloWorld.endsWith("World")) {
+            System.out.println("String ends with World"); // Prints
+        }
+
+        if (helloWorld.contains("World")) {
+            System.out.println("String contains World"); // Prints
+        }
+
+    }
+}
+
+```
+### String Manipulation
+
+There are two types of String manipulation methods, the first set, don't change the underlying meaning of the text value, but perform some kind of clean up
+
+| Method | Description |
+|    :-:    |     :-:     |
+|    indent  | This method was added in JDK 15, adds or removes spaces from the beginning of lines in multi-line text|
+|    strip/ stripLeading / stripTrailing/ trim  | The difference between the strip and trim method is that strip() supports a larger set of white space characters. It and the corresponding stripLeading and stripTrailing methods were added in JDK 11.|
+|    toLowerCase/ toUpperCase   | Returns a new String, either in a lower case or upper case|
+
+The second set transform the String value and return a String with a different meaning:
+
+| Method | Description |
+|    :-:    |     :-:     |
+|    concat  | Similar to '+' operator for strings, it concatenates text to the String and returns a new String as the result.|
+|    join  | Allows multiple strings to be concatenated together in a single method, specifying a delimiter|
+|    repeat   | Returns the String repeated by the number of times specified in the argument.|
+|    replace/ replaceAll/ replaceFirst   | These methods replace characters or substrings in the String, returning a new String with replacements made.|
+|    substring/ subSequence   | These return a part of the String, its range defined by the start and end of the index specified|
+
+```java
+public class StringMethods {
+
+    public static void main(String[] args) {
+        String birthDate = "12/11/1994";
+        int startingIndex = birthDate.indexOf("1994");
+
+        System.out.printf("Starting Index = %d %n", startingIndex); // Prints 6
+        System.out.printf("Birth Year = %s %n", birthDate.substring(startingIndex)); // Prints 1994
+
+        System.out.printf("Month = %s %n", birthDate.substring(3,5)); // Prints 11
+
+        String newDate = String.join("/", "25", "7", "1991");
+        System.out.printf("New Date = %s %n", newDate); // Prints 25/7/1991
+
+        newDate = "25"; // Can also be done with concat, but is very inefficiently
+        newDate = newDate.concat("/");
+        newDate = newDate.concat("7");
+        newDate = newDate.concat("/");
+        newDate = newDate.concat("1991");
+
+        System.out.printf("New Date = %s %n", newDate); // Prints 25/7/1991
+
+        // Concat using method chaining
+
+        newDate = "25".concat("/").concat("7").concat("/").concat("1991");
+        System.out.printf("New Date = %s %n", newDate); // Prints 25/7/1991
+
+        System.out.printf("New Date = %s %n",newDate.replace("/", "-")); // replaces '/' with '-'
+        System.out.printf("New Date = %s %n",newDate.replace("7", "07")); // replaces '7' with '07'
+
+        System.out.printf("New Date = %s %n",newDate.replaceFirst("/", "-")); // replaces first '/' with '-'
+        System.out.printf("New Date = %s %n",newDate.replaceAll("/", "---")); // replaces all '/' with '---'
+
+        System.out.println("ABC\n".repeat(3));
+        System.out.println("-".repeat(20));
+    }
+}
+```
+### The StringBuilder Class
+
+Java provides a mutable class that lets us change its text value. The most efficient way to create regular string is to assign a literal to a String object.
+
+There are four ways to create a new StringBuilder object, using the new keyword.
+
+* Pass a String
+* Pass no arguments
+* Pass an integer value
+* Pass another type of character sequence (like StringBuilder)
+
+An example can be seen below:
+
+```java
+public class Main {
+    public static void main(String[] args) {
+
+        String helloWorld = "Hello" + " World";
+
+        // StringBuilder helloWorldBuilder = "Hello" + "World"; Does not compile
+
+        StringBuilder helloWorldBuilder = new StringBuilder("Hello" + " World");
+
+        printInformation(helloWorld); //Prints Hello World
+        printInformation(helloWorldBuilder); //Prints Hello World
+
+        helloWorld.concat(" and Goodbye"); // returned value not reassigned to new variable
+        helloWorldBuilder.append(" and Goodbye"); // appended value added to original string
+
+        printInformation(helloWorld); //Prints Hello World
+        printInformation(helloWorldBuilder); //Prints Hello World and Goodbye
+    }
+
+    public static void printInformation(String string) {
+
+        System.out.printf("String = %s %n", string);
+        System.out.printf("Length = %d %n", string.length());
+    }
+
+    public static void printInformation(StringBuilder builder) {
+
+        System.out.printf("String = %s %n", builder);
+        System.out.printf("Length = %d %n", builder.length());
+    }
+}
+```
+
+String methods create a new object in memory and return a reference to this new object. StringBuilder methods return a StringBuilder referenfce, but it's really a self reference.
+
+The StringBuilder calss has many similar methods to Strings. But there are also methods unique to the StringBuilder class:
+
+| Method | Description |
+|    :-:    |     :-:     |
+|    delete/ deleteCharAt  | Deletes a substring using indices to specify a range, or delete a single character at an index|
+|    insert  | Inserts text at a specified position|
+|    reverse   | Reverses the order of the characters in the sequence|
+|    setLength   | Can be used to truncate the sequence, or include null sequences to "fill out" the sequence to that length|
+
+```java
+public class Main {
+    public static void main(String[] args) {
+    
+        StringBuilder builderPlus = new StringBuilder("Hello World");
+        builderPlus.append(" and Goodbye");
+
+        builderPlus.deleteCharAt(16). insert(16, "g");
+        System.out.println(builderPlus); // Hello World and goodbye
+
+        builderPlus.replace(16,17, "G");
+        System.out.println(builderPlus); // Hello World and Goodbye
+
+        builderPlus.reverse().setLength(7);
+        System.out.println(builderPlus); // Prints eybdooG
+    }
+
+    public static void printInformation(String string) {
+
+        System.out.printf("String = %s %n", string);
+        System.out.printf("Length = %d %n", string.length());
+    }
+
+    public static void printInformation(StringBuilder builder) {
+
+        System.out.printf("String = %s %n", builder);
+        System.out.printf("Length = %d %n", builder.length());
+        System.out.printf("Capacity = %d %n", builder.capacity());
+    }
+}
+
+```
+
+#### Print Formatting
+
+System.out.printf can be used to format the output of the string. The example below uses the format specifier "%d" to insert variables into the printed line. 
+
+```java
+
+public class Main {
+    public static void main(String[] args) {
+        int age = 35;
+        System.out.printf("Your age is %d\n", age);
+
+        int yearOfBirth = 2023 - age;
+        System.out.printf("Age = %d, Birth year = %d", age, yearOfBirth);
+    }
+}
+```
+
+##### Format Specifiers
+
+At their most complex, format specifiers take the following form.
+
+%[argument_index$][flags][width][.precision]conversion
+
+They start with a percent sign, end with a conversion symbol, and have lots of options inbetween.
+
+The conversion type "d" is used for decimal integer values. Some common types are shown below
+
+ | Conversion | Argument Category | Description |
+ |    :-:    |     :-:     |      :-:     | 
+ |    'b', 'B'  | general |If the argument (arg) is null, then the return is false. If arg is a boolean, then the result is the string returned by String.valueOf(arg). Otherwise the result is "true"|
+ |   'd', 'D'  | floating point | The result is formatted as a decimal integer (short, int & long) |
+ |   'e', 'E'  | floating point | The result is formatted as a decimal number in computerised scientific notation |
+ |    'f', 'F'   | floating point | The result is formatted as a decimal number (floating point numbers, floats & doubles)|
+ |    'n, 'N'   | line separator | The result is the platform-specific line separator (preferred)|
+ |    't', 'T'   | date/time | Prefix for date and time conversion characters|
+
+Using the example above, the "f" type can be used to output floating point numbers. The default precision is 6 d.p.
+
+```java
+
+public class Main {
+    public static void main(String[] args) {
+        int age = 35;
+        System.out.printf("Your age is %f\n", (float) age); // Outputs 35.000000 (default precision)
+    }
+}
+```
+###### Precision
+
+However, the precision can be modified by inputing (.precision) inbetween the % and the type as shown below.
+
+```java
+
+public class Main {
+    public static void main(String[] args) {
+        int age = 35;
+        System.out.printf("Your age is %.2f\n", (float) age); // Outputs 35.00 (2 d.p)
+    }
+}
+```
+
+###### Width
+
+The width of the output can be adjusted by inserting the desired width inbewteen the "%" and the type as shown below:
+
+Without Formatting:
+
+```java
+public class Main {
+    public static void main(String[] args) {
+
+        for (int i = 1; i < 100_000; i *= 10 ) {
+            System.out.printf("Printing %d %n", i);
+        }
+    }
+}
+```
+
+Output:
+
+Printing 1 
+Printing 10 
+Printing 100 
+Printing 1000 
+Printing 10000
+
+With Formatting
+
+```java
+public class Main {
+    public static void main(String[] args) {
+
+        for (int i = 1; i < 100_000; i *= 10 ) {
+            System.out.printf("Printing %6d %n", i); // Width of largest value (1000000) is 6
+        }
+    }
+}
+```
+Output:
+
+Printing      1 
+Printing     10 
+Printing    100 
+Printing   1000 
+Printing  10000 
+
+##### String Formatting
+
+In Java 15 String formatting was added so the string itself can be directly formatted using two different methods as shown below:
+
+```java
+public class Main {
+    public static void main(String[] args) {
+        int age = 35
+        String formattedString = String.format("Your age is %d", age);
+        System.out.println(formattedString); // Your age is 35
+    }
+}
+```
+
+```java
+public class Main {
+    public static void main(String[] args) {
+        int age = 35
+        String formattedString = "Your age is %d".formatted(age)
+        System.out.println(formattedString); // Your age is 35
+    }
+}
+```
+#### Text Blocks
+
+Some common escape sequences are shown below:
+
+ | Escape Sequence | Description |
+ |    :-:    |     :-:     | 
+ |    \t   | Insert a tab character|
+ |   \n  | Insert a new line character |
+ |    \\"   | Insert a double quote character |
+ |   \\\   | Insert a backslash character|
+ 
+ Incorporating these characters and formatting with them can look quite complicated:
+ 
+ ```java
+ public class Main {
+    public static void main(String[] args) {
+
+
+        String bulleted = "Print a Bulleted List:\n" +
+                "\t\u2022 First Point\n" +
+                "\t\t\u2022 Second Point\n";
+
+
+        System.out.println(bulleted);
+    }
+}
+
+```
+
+Output:
+
+Print a Bulleted List:
+  * First Point
+    * Second Point
+     
+However, this can be easily replicated using a text block in Java 15.
+
+
+```java
+public class Main {
+    public static void main(String[] args) {
+
+        String textBlock = """
+                    Print a Bulleted List:
+                        \u2022 First Point
+                            \u2022 Second Point""";
+
+        System.out.println(textBlock);
+    }
+}
+
+```
+
+Print a Bulleted List:
+  * First Point
+    * Second Point
+    
+## Section 7 - Classes
 
 Java uses OOP (Onject Orientated Programming) which is a technique to model objects that contain both data and code. The building block of Java that leads to Object-Oriented programming is a 'class' which describes the data (fields) and behaviour (methods) that are relevant to the object being described. Class members can be a field, method or any dependent element. If a field is static, there is only one copy in memory, and this value is associated with the class itself. If a field is not static, it is an instance field, and each object may have a different value stored for this field. A class is like a blueprint for an object and when an object is created, it inherits all the variables and functions from the class.
 
@@ -1044,190 +1505,4 @@ An overriden class can do one of three things
 * It can call the parent class's method, including other code to run, so it can extend the functionality.
 
 
-## Chapter X - String Manipulation
 
-### Print Formatting
-
-System.out.printf can be used to format the output of the string. The example below uses the format specifier "%d" to insert variables into the printed line. 
-
-```java
-
-public class Main {
-    public static void main(String[] args) {
-        int age = 35;
-        System.out.printf("Your age is %d\n", age);
-
-        int yearOfBirth = 2023 - age;
-        System.out.printf("Age = %d, Birth year = %d", age, yearOfBirth);
-    }
-}
-```
-
-#### Format Specifiers
-
-At their most complex, format specifiers take the following form.
-
-%[argument_index$][flags][width][.precision]conversion
-
-They start with a percent sign, end with a conversion symbol, and have lots of options inbetween.
-
-The conversion type "d" is used for decimal integer values. Some common types are shown below
-
- | Conversion | Argument Category | Description |
- |    :-:    |     :-:     |      :-:     | 
- |    'b', 'B'  | general |If the argument (arg) is null, then the return is false. If arg is a boolean, then the result is the string returned by String.valueOf(arg). Otherwise the result is "true"|
- |   'd', 'D'  | floating point | The result is formatted as a decimal integer (short, int & long) |
- |   'e', 'E'  | floating point | The result is formatted as a decimal number in computerised scientific notation |
- |    'f', 'F'   | floating point | The result is formatted as a decimal number (floating point numbers, floats & doubles)|
- |    'n, 'N'   | line separator | The result is the platform-specific line separator (preferred)|
- |    't', 'T'   | date/time | Prefix for date and time conversion characters|
-
-Using the example above, the "f" type can be used to output floating point numbers. The default precision is 6 d.p.
-
-```java
-
-public class Main {
-    public static void main(String[] args) {
-        int age = 35;
-        System.out.printf("Your age is %f\n", (float) age); // Outputs 35.000000 (default precision)
-    }
-}
-```
-##### Precision
-
-However, the precision can be modified by inputing (.precision) inbetween the % and the type as shown below.
-
-```java
-
-public class Main {
-    public static void main(String[] args) {
-        int age = 35;
-        System.out.printf("Your age is %.2f\n", (float) age); // Outputs 35.00 (2 d.p)
-    }
-}
-```
-
-##### Width
-
-The width of the output can be adjusted by inserting the desired width inbewteen the "%" and the type as shown below:
-
-Without Formatting:
-
-```java
-public class Main {
-    public static void main(String[] args) {
-
-        for (int i = 1; i < 100_000; i *= 10 ) {
-            System.out.printf("Printing %d %n", i);
-        }
-    }
-}
-```
-
-Output:
-
-Printing 1 
-Printing 10 
-Printing 100 
-Printing 1000 
-Printing 10000
-
-With Formatting
-
-```java
-public class Main {
-    public static void main(String[] args) {
-
-        for (int i = 1; i < 100_000; i *= 10 ) {
-            System.out.printf("Printing %6d %n", i); // Width of largest value (1000000) is 6
-        }
-    }
-}
-```
-Output:
-
-Printing      1 
-Printing     10 
-Printing    100 
-Printing   1000 
-Printing  10000 
-
-#### String Formatting
-
-In Java 15 String formatting was added so the string itself can be directly formatted using two different methods as shown below:
-
-```java
-public class Main {
-    public static void main(String[] args) {
-        int age = 35
-        String formattedString = String.format("Your age is %d", age);
-        System.out.println(formattedString); // Your age is 35
-    }
-}
-```
-
-```java
-public class Main {
-    public static void main(String[] args) {
-        int age = 35
-        String formattedString = "Your age is %d".formatted(age)
-        System.out.println(formattedString); // Your age is 35
-    }
-}
-```
-### Text Blocks
-
-Some common escape sequences are shown below:
-
- | Escape Sequence | Description |
- |    :-:    |     :-:     | 
- |    \t   | Insert a tab character|
- |   \n  | Insert a new line character |
- |    \\"   | Insert a double quote character |
- |   \\\   | Insert a backslash character|
- 
- Incorporating these characters and formatting with them can look quite complicated:
- 
- ```java
- public class Main {
-    public static void main(String[] args) {
-
-
-        String bulleted = "Print a Bulleted List:\n" +
-                "\t\u2022 First Point\n" +
-                "\t\t\u2022 Second Point\n";
-
-
-        System.out.println(bulleted);
-    }
-}
-
-```
-
-Output:
-
-Print a Bulleted List:
-  * First Point
-		   * Second Point
-     
-However, this can be easily replicated using a text block in Java 15.
-
-
-```java
-public class Main {
-    public static void main(String[] args) {
-
-        String textBlock = """
-                    Print a Bulleted List:
-                        \u2022 First Point
-                            \u2022 Second Point""";
-
-        System.out.println(textBlock);
-    }
-}
-
-```
-
-Print a Bulleted List:
-  * First Point
-		   * Second Point
