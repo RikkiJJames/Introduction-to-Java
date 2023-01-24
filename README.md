@@ -921,4 +921,313 @@ class Main {
 
 ### Inheritance
 
-Inheritance is a way to reuse code
+Inheritance is a way to reuse code. It is a way to organise classes into a parent-child hierachy, which lets the child inherit, fields and methods from its parent.
+
+The most generic (base class), starts at the top of the hierachy. Every class below it is a subclass. A parent can have multiple children. However, in Java a child can only have one parent. But it will also inherit from it's parent class's parent etc.
+
+Below is an example of an animal class:
+
+```java
+
+public class Animal {
+
+    private String type;
+    private String size;
+    private double weight;
+    
+    
+    public Animal() {
+    
+    }
+    
+    public Animal(String type, String size, double weight) {
+        this.type = type;
+        this.size = size;
+        this.weight = weight;
+    }
+
+    @Override
+    public String toString() {
+        return "Animal{" +
+                "type='" + type + '\'' +
+                ", size='" + size + '\'' +
+                ", weight=" + weight +
+                '}';
+    }
+
+    public void move(String speed){
+        System.out.println(type + " moves " + speed);
+    }
+
+    public void makeNoise(){
+        System.out.println(type + " makes some kind of noise ");
+    }
+}
+```
+
+#### super Keyword
+
+super() is a lot like this(). It's a way to call a constructor on the super class, directly from the sub classes constructor. Like this(), it has to be the first statement of the constructor. Because of that rule, this() and super() can never be called from the same constructor.
+If a explicit call to super() is not made, then Java does it for you using super's default constructor.
+If the super class does not have a default constructor, then you must explicitly call super() in all of your constructors, passing the right arguments to that constructor.
+
+#### Sub Classes
+
+A Dog class has been created, as a dog "IS A" animal, it will inherit animal attributes (type, size and weight) as well as the animal methods. The Dog class can also be specialised with its own fields and behaviour. To make one class inherit from another, the "extends" keyword is used. This class calls the default constructor of the animal class and doesn't set values to any field methods. Therefore, type & size will be "null" and weight will be 0.0.
+
+
+```java
+public class Dog extends Animal {
+    public Dog(){
+        super();
+    }
+}
+```
+
+However, you can pass values into the Dog constructor to instantiate these values. The updated Dog class below now has two fields specific to it (ear & tail shape). As well as this it uses a ternary operator to pass the size into the super constructor and the toString() method calls the super.toString() method to print out all information.
+
+```java
+public class Dog extends Animal {
+
+    private String earShape;
+    private String tailShape;
+
+    public Dog(String type, double weight){
+        this(type,weight, "Perky", "Curled");
+    }
+    public Dog(String type, double weight, String earShape, String tailShape) {
+        super(type, weight < 15 ? "small": (weight < 35 ? "medium" : "large"), weight);
+        this.earShape = earShape;
+        this.tailShape = tailShape;
+    }
+
+    @Override
+    public String toString() {
+        return "Dog{" +
+                "earShape='" + earShape + '\'' +
+                ", tailShape='" + tailShape + '\'' +
+                "} " + super.toString();
+    }
+}
+
+```
+
+##### Overriding super class methods
+
+Overriding a method is when you create a method on a subclass, which has the same signature as a method on a super class. This enables the child class to show different behaviour for that method.
+
+See the example below where the makeNoise() method is overriden in the dog class and now has no output.
+
+```java
+class Dog {
+    public void makeNoise() {
+
+    }
+}
+```
+
+Another way to ensure a method is overriden is with alt + insert in intelliJ. This includes the @Override symbol that tells you the method is overriding the parent method.
+
+```java
+class Dog {
+    @Override
+    public void makeNoise() {
+
+    }
+}
+```
+
+An overriden class can do one of three things
+
+* it can implement completely different behaviour, overriding the behaviour of the parent.
+* It can simply call the parents class method, which is somewhat redundant to do.
+* It can call the parent class's method, including other code to run, so it can extend the functionality.
+
+
+## Chapter X - String Manipulation
+
+### Print Formatting
+
+System.out.printf can be used to format the output of the string. The example below uses the format specifier "%d" to insert variables into the printed line. 
+
+```java
+
+public class Main {
+    public static void main(String[] args) {
+        int age = 35;
+        System.out.printf("Your age is %d\n", age);
+
+        int yearOfBirth = 2023 - age;
+        System.out.printf("Age = %d, Birth year = %d", age, yearOfBirth);
+    }
+}
+```
+
+#### Format Specifiers
+
+At their most complex, format specifiers take the following form.
+
+%[argument_index$][flags][width][.precision]conversion
+
+They start with a percent sign, end with a conversion symbol, and have lots of options inbetween.
+
+The conversion type "d" is used for decimal integer values. Some common types are shown below
+
+ | Conversion | Argument Category | Description |
+ |    :-:    |     :-:     |      :-:     | 
+ |    'b', 'B'  | general |If the argument (arg) is null, then the return is false. If arg is a boolean, then the result is the string returned by String.valueOf(arg). Otherwise the result is "true"|
+ |   'd', 'D'  | floating point | The result is formatted as a decimal integer (short, int & long) |
+ |   'e', 'E'  | floating point | The result is formatted as a decimal number in computerised scientific notation |
+ |    'f', 'F'   | floating point | The result is formatted as a decimal number (floating point numbers, floats & doubles)|
+ |    'n, 'N'   | line separator | The result is the platform-specific line separator (preferred)|
+ |    't', 'T'   | date/time | Prefix for date and time conversion characters|
+
+Using the example above, the "f" type can be used to output floating point numbers. The default precision is 6 d.p.
+
+```java
+
+public class Main {
+    public static void main(String[] args) {
+        int age = 35;
+        System.out.printf("Your age is %f\n", (float) age); // Outputs 35.000000 (default precision)
+    }
+}
+```
+##### Precision
+
+However, the precision can be modified by inputing (.precision) inbetween the % and the type as shown below.
+
+```java
+
+public class Main {
+    public static void main(String[] args) {
+        int age = 35;
+        System.out.printf("Your age is %.2f\n", (float) age); // Outputs 35.00 (2 d.p)
+    }
+}
+```
+
+##### Width
+
+The width of the output can be adjusted by inserting the desired width inbewteen the "%" and the type as shown below:
+
+Without Formatting:
+
+```java
+public class Main {
+    public static void main(String[] args) {
+
+        for (int i = 1; i < 100_000; i *= 10 ) {
+            System.out.printf("Printing %d %n", i);
+        }
+    }
+}
+```
+
+Output:
+
+Printing 1 
+Printing 10 
+Printing 100 
+Printing 1000 
+Printing 10000
+
+With Formatting
+
+```java
+public class Main {
+    public static void main(String[] args) {
+
+        for (int i = 1; i < 100_000; i *= 10 ) {
+            System.out.printf("Printing %6d %n", i); // Width of largest value (1000000) is 6
+        }
+    }
+}
+```
+Output:
+
+Printing      1 
+Printing     10 
+Printing    100 
+Printing   1000 
+Printing  10000 
+
+#### String Formatting
+
+In Java 15 String formatting was added so the string itself can be directly formatted using two different methods as shown below:
+
+```java
+public class Main {
+    public static void main(String[] args) {
+        int age = 35
+        String formattedString = String.format("Your age is %d", age);
+        System.out.println(formattedString); // Your age is 35
+    }
+}
+```
+
+```java
+public class Main {
+    public static void main(String[] args) {
+        int age = 35
+        String formattedString = "Your age is %d".formatted(age)
+        System.out.println(formattedString); // Your age is 35
+    }
+}
+```
+### Text Blocks
+
+Some common escape sequences are shown below:
+
+ | Escape Sequence | Description |
+ |    :-:    |     :-:     | 
+ |    \t   | Insert a tab character|
+ |   \n  | Insert a new line character |
+ |    \\"   | Insert a double quote character |
+ |   \\\   | Insert a backslash character|
+ 
+ Incorporating these characters and formatting with them can look quite complicated:
+ 
+ ```java
+ public class Main {
+    public static void main(String[] args) {
+
+
+        String bulleted = "Print a Bulleted List:\n" +
+                "\t\u2022 First Point\n" +
+                "\t\t\u2022 Second Point\n";
+
+
+        System.out.println(bulleted);
+    }
+}
+
+```
+
+Output:
+
+Print a Bulleted List:
+  * First Point
+		   * Second Point
+     
+However, this can be easily replicated using a text block in Java 15.
+
+
+```java
+public class Main {
+    public static void main(String[] args) {
+
+        String textBlock = """
+                    Print a Bulleted List:
+                        \u2022 First Point
+                            \u2022 Second Point""";
+
+        System.out.println(textBlock);
+    }
+}
+
+```
+
+Print a Bulleted List:
+  * First Point
+		   * Second Point
