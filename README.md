@@ -1,5 +1,5 @@
 # Introduction-to-Java
-An introductory guide into Python
+An introductory guide into Java
 
  ## Contents
 
@@ -44,7 +44,7 @@ An introductory guide into Python
          * [Width](#width)  
        * [String Formatting](#string-formatting)
       * [Text Blocks](#text-blocks)
- * [Section 7 - Classes](#section-7---classes)
+ * [Section 7 - OOP](#section-7---oop)
    * [Creating Classes](#creating-classes)
    * [Packages](#packages)
    * [Encapsulation](#encapsulation)
@@ -1047,7 +1047,7 @@ Print a Bulleted List:
   * First Point
     * Second Point
     
-## Section 7 - Classes
+## Section 7 - OOP
 
 Java uses OOP (Onject Orientated Programming) which is a technique to model objects that contain both data and code. The building block of Java that leads to Object-Oriented programming is a 'class' which describes the data (fields) and behaviour (methods) that are relevant to the object being described. Class members can be a field, method or any dependent element. If a field is static, there is only one copy in memory, and this value is associated with the class itself. If a field is not static, it is an instance field, and each object may have a different value stored for this field. A class is like a blueprint for an object and when an object is created, it inherits all the variables and functions from the class.
 
@@ -1505,4 +1505,125 @@ An overriden class can do one of three things
 * It can call the parent class's method, including other code to run, so it can extend the functionality.
 
 
+### Composition
 
+Composition is another component of OOP. The difference between inheritance and composition is that inheritance defines an 'IS A' relationship. Whereas composition defines a 'HAS A' relationship. Composition allows the modelling of parts which make up a greater whole. The example below models a PC which is product comprised of a monitor, motherboard and case.
+
+```java
+public class Product {
+
+    private String model;
+    private String manufacturer;
+    private int width;
+    private int height;
+    private int depth;
+
+    public Product(String model, String manufacturer) {
+        this.model = model;
+        this.manufacturer = manufacturer;
+    }
+}
+
+class PC extends Product {
+
+    private ComputerCase computerCase;
+    private Monitor monitor;
+    private Motherboard motherboard;
+
+    public PC(String model, String manufacturer, ComputerCase computerCase, Monitor monitor, Motherboard motherboard) {
+        super(model, manufacturer);
+        this.computerCase = computerCase;
+        this.monitor = monitor;
+        this.motherboard = motherboard;
+    }
+
+    public ComputerCase getComputerCase() {
+        return computerCase;
+    }
+
+    public Monitor getMonitor() {
+        return monitor;
+    }
+
+    public Motherboard getMotherboard() {
+        return motherboard;
+    }
+}
+
+class Monitor extends Product {
+
+    private int size;
+    private String resolution;
+
+
+    public Monitor(String model, String manufacturer) {
+        super(model, manufacturer);
+    }
+
+    public Monitor(String model, String manufacturer, int size, String resolution) {
+        super(model, manufacturer);
+        this.size = size;
+        this.resolution = resolution;
+    }
+
+    public void drawPixelAt(int x, int y, String colour){
+        System.out.println(String.format("Drawing pixel at %d, %d in colour %s ", x,y, colour));
+    }
+}
+
+class Motherboard extends Product {
+
+    private int ramSlots;
+    private int cardSlots;
+    private String bios;
+
+    public Motherboard(String model, String manufacturer) {
+        super(model, manufacturer);
+    }
+
+    public Motherboard(String model, String manufacturer, int ramSlots, int cardSlots, String bios) {
+        super(model, manufacturer);
+        this.ramSlots = ramSlots;
+        this.cardSlots = cardSlots;
+        this.bios = bios;
+    }
+
+    public void loadProgram(String programName){
+        System.out.println(String.format("Program %d is now loading...", programName));
+    }
+}
+
+class ComputerCase extends Product {
+
+    private String powerSupply;
+
+    public ComputerCase(String model, String manufacturer) {
+        super(model, manufacturer);
+    }
+
+    public ComputerCase(String model, String manufacturer, String powerSupply) {
+        super(model, manufacturer);
+        this.powerSupply = powerSupply;
+    }
+
+    public void pressPowerButton(){
+        System.out.println("Power button pressed");
+    }
+}
+```
+As a general rule composition should be looked at first when designing programs in Java:
+
+
+* Composition is more flexible, parts can be added or removed. These changes are less likely to have a downstream effect.
+* Composition provides functional reuse outside of the class hierachy, meaning classes can share attributes & behaviour, by having similar components, instead of inheriting functionality from a parent or base class.
+* Java's inheritance breaks encapsulation, because subclasses may need direct access to a parent's state or behaviour.
+
+On the other hand:
+
+* Inheritance is less flexible
+* Adding or removing a class from a class hierachy may impact all subclasses from that point.
+* A new subclass may not need all the functionality or attributes of its parent class.
+
+### Encapsulation
+
+In Java, encapsulation means hiding things, by making them private or inaccessible.
