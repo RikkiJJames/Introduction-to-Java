@@ -63,6 +63,8 @@ An introductory guide into Java
      * [Instance variables](#instance-variables)
      * [Instance Methods](#instance-methods)
    * [Inheritance](#inheritance)
+  * [Section 8 - Arrays](#section-8---arrays)
+
 
  ## Section 1 - Java Programme Structure
  
@@ -1880,4 +1882,109 @@ Polymorphism enables you to write generic code, based on the base class.
 
 ## Section 8 - Arrays
 
-Arrays are a way to store and manipulate multiple values of the same type
+Arrays are a data structure that allows the storage and manipulation of multiple values of the same type.
+Elements in an Array are 0 indexed.
+
+### Declaring an Array
+
+When you declare an array, first the type of elements in the array must be specified, followed by square brackets which is the key for Java to identify the variable as an Array. The square brackets can also be after the variable name:
+
+```java
+
+int [] integers;
+String [] names;
+double accountBalances [];
+```
+
+### Instantiating an Array
+
+One way to instantiate an Array is with the new keyword and a pair of square brackets:
+
+```java
+int [] integers = new int [10]; // Array with a size of 10 elements
+```
+
+The size of an array, once created, is fixed. Elements can not be added or deleted. However, the existing elements in the array can be reassigned. An Array instantiation does not have a set of parentheses, meaning data cannot be passed to a constructor for an array.
+
+#### The Array Initialiser
+
+An Array initialiser makes instantiating and intialising a small Array easier:
+
+```java
+int [] integers = new int []{1, 2, 3, 4, 5}; // Array with 1, 2, 3, 4 & 5 as its elements
+```
+
+Because the values are specified, the length of the array can be determined. Therefore, they don't need to be declared in the square brackets. In fact the "new int[]" does not need to be specified. However, this is only the case during instantiation.
+
+```java
+int [] integers = {1, 2, 3, 4, 5}; // Array with 1, 2, 3, 4 & 5 as its elements
+```
+
+An example of Array initilisation and instantiations can be seen below:
+
+```java
+import java.util.Arrays;
+
+public class Main {
+    public static void main(String[] args) {
+
+        int [] integers = new int [10]; // Integer Array with a size of 10 and values of 0
+        integers[5] = 50; // sets 6th element to 50
+
+        double [] doubles = new double [10]; // Double Array with size of 10 and values of 0.0
+        doubles[2] = 3.5; // Third element set to 3.5
+
+        System.out.println(Arrays.toString(integers)); // Prints out Array values [0, 0, 0, 0, 0, 50, 0, 0, 0, 0]
+        System.out.println(Arrays.toString(doubles)); // [0.0, 0.0, 3.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+
+        int [] integers1 = new int []{1, 2, 3, 4, 5}; // Array with 1, 2, 3, 4 & 5 as its elements
+
+        /*
+        Compiler Error - Array initialiser is not allowed here
+        int [] integers2;
+        integers2 = {2, 4, 6, 8, 10};
+        */
+
+        int [] integers2;
+
+        integers2 = new int []{1,2,3,4,5}; // Initialiser can be used with new int keywords
+        int [] integers3 = {2, 4, 6, 8, 10}; // Array with 2, 4, 6, 8 & 10 as its elements
+
+        for (int i = 0; i < integers2.length; i++){
+            System.out.print(integers2[i] + " "); // Prints out Array values
+        }
+        System.out.println();
+
+        System.out.println(Arrays.toString(integers1)); // [1, 2, 3, 4, 5]
+        System.out.println(Arrays.toString(integers3)); // [2, 4, 6, 8, 10]
+
+
+        System.out.printf("First Element= %d %n", integers1[0]); // Prints first element
+        System.out.printf("Length of Array = %d %n", integers1.length); // Prints Length of Array
+        System.out.printf("Last Element = %d %n", integers1[(integers1.length - 1)]); // Prints Last Element of Array
+    }
+}
+```
+
+Array is a special class in Java which like all other classes inherits from java.lang.Object.
+
+#### Enhanced for Loops
+
+The enhanced for loop/ the For Each loop. Was designed to walk through elements in an Array or any kind of collection. It processes one element at a time, from the first to the last. The syntax can be seen below:
+
+```java
+
+for (declaration : collection) {
+    // block of statements
+}
+```
+
+It's important to notice the seperator between components is a colon and not a semi-colon. The enhanced for loops also only has two components vs the three using the basic for loop. See below for an example:
+
+```java
+int [] integers1 = new int []{1, 2, 3, 4, 5}; // Array with 1, 2, 3, 4 & 5 as its elements
+
+    for (int element: integers1) {
+        System.out.print(element + " ");
+    }
+```
