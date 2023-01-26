@@ -1627,3 +1627,257 @@ On the other hand:
 ### Encapsulation
 
 In Java, encapsulation means hiding things, by making them private or inaccessible.
+
+Reasons being hiding things:
+
+* Makes the interface simpler, we may want to hide unnecessary details
+* Protects the integrity of data on an object, we may hide or restrict access to some of the data and operations
+* To decouple the published interface from the internal details of the class, we may hide actual names and types of class members.
+
+The interface here referres to the class members that can be accessed by calling code. Everything else is interal or private.
+An application programming interface, or API, is the public contract, that tells others how to use the class.
+
+To see why encapsulation is important, see the example below that does not use it.
+
+```java
+class Game {
+
+    public static void main(String[] args) {
+        Player player = new Player();
+
+        player.name = "John"; // Can access fields directly
+        player.health = 20;
+        player.weapon = "Sword";
+
+        int damage = 10;
+        player.loseHealth(damage);
+        System.out.printf("Remaining health = %d%n", player.healthRemaining()); // Remaining health = 10
+
+        player.health = 200;
+        player.loseHealth(11);
+        System.out.printf("Remaining health = %d%n", player.healthRemaining()); // Remaining health = 189 exceeding max of 100
+    }
+}
+
+public class Player {
+
+    public String name; // Public access modifier
+    public int health;
+    public String weapon;
+
+    public void loseHealth(int damage) {
+        health -= damage;
+
+        if (health <= 0) {
+            System.out.println("Player knocked out of game");
+        }
+    }
+
+    public int healthRemaining() {
+        return health;
+    }
+
+    public void restoreHealth(int extraHealth) {
+        health += extraHealth;
+
+        if (health > 100) {
+            System.out.println("Player restored to 100%");
+            health = 100;
+        }
+    }
+}
+
+```
+
+Allowing direct access to data on an object, can potentially bypass checks and additional processing that the class has in place to manage the data. It also prevents renaming or ammending variable names. For example:
+
+```java
+public class Player {
+
+    public String fullName; // Member field updated from name to fullName
+    public int health;
+    public String weapon;
+}
+```
+This would break the Game class that can no longer find those fields.
+
+An encapsulated version can be seen below:
+
+```java
+class Game {
+
+    public static void main(String[] args) {
+
+        EnhancedPlayer enhancedPlayer = new EnhancedPlayer("John");
+        System.out.printf("Initial health is %d %n", enhancedPlayer.getHealthPercentage()); //
+
+        EnhancedPlayer enhancedPlayer2 = new EnhancedPlayer("Pete", 200, "Sword");
+        System.out.printf("Initial health is %d %n", enhancedPlayer2.getHealthPercentage()); // Maximum health is still 100
+    }
+}
+
+public class EnhancedPlayer {
+
+    private String name;
+    private int healthPercentage;
+    private String weapon;
+
+    public EnhancedPlayer(String name) {
+        this(name, 100, "Sword");
+    }
+
+    public EnhancedPlayer(String name, int health, String weapon) {
+        this.name = name;
+
+        if (health <= 0 ) {
+            this.healthPercentage = 1;
+        } else if (health > 100) {
+            this.healthPercentage = 100;
+        } else {
+            this.healthPercentage = health;
+        }
+        this.weapon = weapon;
+    }
+
+    public void loseHealth(int damage){
+        this.healthPercentage -= damage;
+
+        if (this.healthPercentage <=0){
+            System.out.println("Player knocked out");
+            // Reduce number of lives remaining
+        }
+    }
+
+    public int getHealthPercentage(){
+        return this.healthPercentage;
+    }
+}
+```
+
+The main benefit of encapsulation is you're not affecting any other code. Its acts as a black box
+
+To create an encapsulated class:
+
+* Create constructors for object initialisation, which enforces that only objects with valid data will get created.
+* Use the private access modifier for your fields.
+* Use setter and getter methods sparingly, and only as needed.
+* Use access modifiers that are not private, only for the methods that the calling code needs to use.
+
+
+### Polymorphism
+
+Polymophism means many forms. This allows the writing of code to call a method, but at runtime, the method's behaviour can be different for different objects. This means the behaviour is dependent on the runtime type of the object which may be different from the declared type in the code.
+
+The declared type has to have some kind of relationship to the runtime type. Inheritance is one way to establish this relationship. However, there are other ways.
+
+```java
+class Cinema {
+    public static void main(String[] args) {
+        Movie movie1 = new Adventure("Star Wars"); // Adventure is a type of movie
+        movie1.watchMovie(); // Calls Adventure watch movie method
+
+        Movie movie2 = new Comedy("Space Balls"); // Comedy is a type of movie
+        movie2.watchMovie(); // Calls Comedy watch movie method
+
+        Movie movie3 = Movie.getMovie("Adventure", "Iron Man"); // creates adventure type movie
+        movie3.watchMovie();
+    }
+}
+
+public class Movie {
+
+    private String title;
+
+    public Movie(String title) {
+        this.title = title;
+    }
+
+    public void watchMovie() {
+        String instanceType = this.getClass().getSimpleName();
+        System.out.printf("%s is a %s film %n", title, instanceType);
+    }
+
+    public static Movie getMovie(String type, String title) { // returns new movie type depending on type
+
+        switch (type.toUpperCase().charAt(0)) {
+            case 'A':
+                return new Adventure(title);
+            case 'C':
+                return new Comedy(title);
+            default:
+                return new Movie(title);
+        }
+    }
+}
+
+class Adventure extends Movie {
+
+    public Adventure(String title) {
+        super(title);
+    }
+    @Override
+    public void watchMovie() {
+        super.watchMovie();
+        System.out.printf(".. %s%n".repeat(3),
+                "Pleasant Scene",
+                "Scary Music",
+                "Something Bad Happens");
+
+        System.out.println();
+    }
+}
+
+class Comedy extends Movie {
+
+    public Comedy(String title) {
+        super(title);
+    }
+    @Override
+    public void watchMovie() {
+        super.watchMovie();
+        System.out.printf(".. %s%n".repeat(3),
+                "Something funny happens",
+                "Something even funnier happens",
+                "Happy Ending");
+
+        System.out.println();
+    }
+}
+
+```
+
+#### Adding Interactivity
+
+The Scanner class can be used to get input from the user.
+
+```java
+import java.util.Scanner;
+
+class Cinema {
+    public static void main(String[] args) {
+
+        Scanner s = new Scanner(System.in); //Get user input
+
+        while (true) {
+            System.out.print("Enter Type (A for Adventure or C for Comedy, " +
+                    "or Q to quit:");
+            String type = s.nextLine();
+            if ("Qq".contains(type)) { //checks if 'Q' or 'q' are entered
+                break;
+            }
+
+            System.out.print("Enter Movie Title: ");
+            String title = s.nextLine();
+            Movie movie = Movie.getMovie(type, title);
+            movie.watchMovie();
+        }
+    }
+}
+
+```
+
+Polymorphism enables you to write generic code, based on the base class.
+
+## Section 8 - Arrays
+
+Arrays are a way to store and manipulate multiple values of the same type
