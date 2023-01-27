@@ -1988,3 +1988,369 @@ int [] integers1 = new int []{1, 2, 3, 4, 5}; // Array with 1, 2, 3, 4 & 5 as it
         System.out.print(element + " ");
     }
 ```
+### Using java.util.Arrays
+
+Arrays are used to manage many items of the same type. Some common behaviour for Arrays would be sorting, initialising values, copying the Array and finding an element. For an array, this bejaviour isn't on the Array instance itself, but with a helper class java.util.Arrays. Some examples on sorting, filling and copying can be seen below:
+
+```java
+import java.util.Arrays;
+import java.util.Random;
+
+public class Main {
+    public static void main(String[] args) {
+
+        int[] firstArray = getRandomArray(10);
+        System.out.println("firstArray = " + Arrays.toString(firstArray));
+        Arrays.sort(firstArray); // Sorts in place
+        System.out.println("firstArray sorted = " + Arrays.toString(firstArray));
+
+        int[] secondArray = new int[10];
+        System.out.println("secondArray = " + Arrays.toString(secondArray));
+        Arrays.fill(secondArray, 5); // Fills Array with specified value
+        System.out.println("secondArray filled with 5's= " + Arrays.toString(secondArray));
+
+        int[] thirdArray = getRandomArray(10);
+        System.out.println("thirdArray = " + Arrays.toString(thirdArray));
+
+        int[] fourthArray = Arrays.copyOf(thirdArray, thirdArray.length); //Copy entire Array
+        System.out.println("fourthArray = " + Arrays.toString(thirdArray));
+
+        Arrays.sort(fourthArray);
+        System.out.println("thirdArray = " + Arrays.toString(thirdArray));
+        System.out.println("fourthArray sorted= " + Arrays.toString(fourthArray));
+
+        int[] smallerArray = Arrays.copyOf(thirdArray,5);
+        System.out.println("smallerArray= " + Arrays.toString(smallerArray)); // Only copied first 5 values
+
+        int[] largerArray = Arrays.copyOf(thirdArray,15);
+        System.out.println("largerArray= " + Arrays.toString(largerArray)); // Adds 5 extra elements
+    }
+
+    public static int[] getRandomArray (int length) { //Returns Array with random values
+        Random random = new Random();
+        int[] newInt = new int[length];
+
+        for (int i = 0; i < length; i++) {
+            newInt[i] = random.nextInt(100);
+        }
+
+        return newInt;
+    }
+}
+```
+
+#### Searching and Matching
+
+There are different algorithms for searching and matching elements in lists. Java includes many of the common search techniques such as binarySearch on many of its collections. However:
+
+* The array has to be sorted
+* If there are duplicate values in the array, there is no guarentee which one it'll match on.
+* Elements must be comparable. Trying to compare instances of different types, may lead to errors and invalid results.
+
+The binarySearch method returns:
+
+* The position of a match if found
+* A -1 when no match was found
+* If the array has duplicates and you need to find the first element, other methods should be used.
+
+An example can be found below:
+
+```java
+import java.util.Arrays;
+import java.util.Random;
+
+public class Main {
+    public static void main(String[] args) {
+
+        String[] sArray = {"Able", "Jane", "Mark", "Ralph", "David"};
+        Arrays.sort(sArray);
+
+        System.out.println(Arrays.toString(sArray));
+
+        if (Arrays.binarySearch(sArray, "Mark") >= 0) {
+            System.out.println("Found Mark");
+        }
+    }
+
+    public static int[] getRandomArray(int length) {
+
+        Random random = new Random();
+        int [] newArray = new int[length];
+
+        for (int i = 0; i < length; i++) {
+            newArray[i] = random.nextInt(100);
+        }
+
+        return newArray;
+    }
+}
+```
+
+Two Arrays are considered equal if both Arrays have the same number of elements and all elements in the same position are equal. An example can be seen below:
+
+```java
+import java.util.Arrays;
+
+public class Main {
+    public static void main(String[] args) {
+
+        int[] s1 = {1, 2, 3, 4, 5};
+        int[] s2 = {1, 2, 3, 4, 5};
+        int[] s3 = {5, 4, 3, 2, 1};
+        int[] s4 = {1, 2, 3, 4, 5, 0};
+
+
+        if (Arrays.equals(s1, s2)) {
+            System.out.println("Arrays are equal"); // Prints as - Elements are the same
+        } else {
+            System.out.println("Arrays are not equal");
+        }
+
+        if (Arrays.equals(s1, s3)) {
+            System.out.println("Arrays are equal");
+        } else {
+            System.out.println("Arrays are not equal"); // Prints as - Elements are not in the same order
+        }
+
+        if (Arrays.equals(s1, s4)) {
+            System.out.println("Arrays are equal");
+        } else {
+            System.out.println("Arrays are not equal"); // Prints as - Elements are not the same length
+        }
+
+
+    }
+}
+```
+
+### Array References
+
+WHen an object is assigned to a variable, the variable becomes a reference to that object. This is true of Arrays. However, if the Array contains objects. Then every Array element is also a reference. One way to know if it's a reference type is the 'new' operator as that creates a new object in memory. 
+
+Examples can be seen below:
+
+```java 
+import java.util.Arrays;
+
+public class Main {
+    public static void main(String[] args) {
+
+
+        int[] myIntArray = new int[5];
+        int[] anotherArray = myIntArray; // Holds the same reference address
+
+        System.out.printf("myIntArray = %s %n", Arrays.toString(myIntArray)); // myIntArray = [0, 0, 0, 0, 0]
+        System.out.printf("anotherArray = %s %n", Arrays.toString(myIntArray)); // anotherArray = [0, 0, 0, 0, 0]
+
+        anotherArray[0] = 1;
+
+        System.out.printf("myIntArray after change = %s %n", Arrays.toString(myIntArray)); // myIntArray = [1, 0, 0, 0, 0]
+        System.out.printf("anotherArray after change = %s %n", Arrays.toString(myIntArray)); // anotherArray = [1, 0, 0, 0, 0]
+
+        modifyArray(myIntArray); // Creates another reference
+        System.out.printf("myIntArray after second change = %s %n", Arrays.toString(myIntArray)); // myIntArray = [1, 2, 0, 0, 0]
+        System.out.printf("anotherArray after second change = %s %n", Arrays.toString(myIntArray)); // anotherArray = [1, 2, 0, 0, 0]
+
+    }
+
+    private static void modifyArray(int[] array) {
+
+        array[1] = 2;
+    }
+}
+```
+
+#### Variable Arguments
+
+The brackets in an Array method signnature can be replaced by three periods. This is a special designation for Java, that means it will take zero or many fields as arguments for the method and create an array to process them in the method.
+
+```java
+public class Main {
+    public static void main(String... args) {
+        System.out.println("Hello world!");
+
+        String [] splitStrings = "Hello World Again".split(" ");
+        printText(splitStrings);
+
+        System.out.println("_".repeat(20));
+        printText("Hello");
+
+        System.out.println("_".repeat(20));
+        printText("Hello", "World", "Again");
+
+        System.out.println("_".repeat(20));
+        printText();
+        
+        String[] sArray = {"first", "second", "third", "fourth", "fifth"};
+        System.out.println(String.join(",", sArray));
+    }
+
+    private static void printText(String... textList){
+
+        for (String t: textList){
+            System.out.println(t);
+        }
+    }
+}
+```
+
+There can only be one variable argument in a method. The variable argument must be the last argument.
+
+### Multi-Dimensional Arrays
+
+Nested Arrays occur when an Array element is an Array. A two dimensional array can be thought of as a table or matrix of values with rows and columns. An Array initialiser can be used for this:
+
+```java
+
+public class Main {
+    public static void main(String[] args) {
+
+        int[][] array = { // Multiline 2D Array
+                {1, 2, 3},
+                {11, 12, 13},
+                {21, 22, 23}
+        };
+
+        int[][] array2 = {{1, 2, 3}, {11, 12, 13}, {21, 22, 23}}; // single line 2D Array
+    }
+}
+```
+
+Multi-Dimensional arrays do not have to be uniform matrixes and the nested Arrays can be different sized
+
+```java
+int[][] array = {{1, 2}, {11, 12, 13}, {21, 22, 23, 24, 25}};
+```
+
+Each element is an array of integers. 
+
+You can also initialise a multi-dimensional Array and define the size of the nested Arrays:
+
+```java
+int[][] array = new int [3][3]; // [outer][inner]
+```
+
+The statement above says that the Array contains three nested arrays and each array will have three ints.
+
+You can also not specify the size of the nested arrays and only specify the outer array size:
+
+```java
+int[][] array = new int [3][];
+```
+
+#### Declaring Two-Dimensional Arrays
+
+There are many ways to declare a two-dimensional array:
+
+```java
+int[][] array; // Most common and clearest way
+int[] array [];
+```
+
+#### Accessing Multi-Dimensional Arrays
+
+```java
+import java.util.Arrays;
+
+public class Main {
+    public static void main(String[] args) {
+
+        int[][] array2 = new int[4][4];
+
+        System.out.println(Arrays.toString(array2)); // Prints string references
+        System.out.println("arrays2.length = " + array2.length);
+
+        for (int[] outer: array2){
+            System.out.println(Arrays.toString(outer)); // Prints element values
+        }
+
+        for (int i = 0; i < array2.length; i++) { // Prints individual element values
+            var innerArray = array2[i];
+
+            for (int j = 0; j < innerArray.length; j++) {
+                System.out.print(array2[i][j] + " ");
+            }
+            System.out.println();
+        }
+
+        System.out.println();
+
+        for (var outer: array2) { // Same as line above but with enhanced for loop
+            for (var element: outer) {
+                System.out.print(element + " ");
+            }
+            System.out.println();
+        }
+
+        for (int i = 0; i < array2.length; i++) { // Prints individual element values
+            var innerArray = array2[i];
+
+            for (int j = 0; j < innerArray.length; j++) {
+                array2[i][j] = (i * 10) + (j + 1); //Assigns values
+            }
+        }
+        
+        System.out.println();
+
+        System.out.println(Arrays.deepToString(array2)); // Prints whole Array
+
+    }
+}
+```
+
+```java
+import java.util.Arrays;
+
+public class Main {
+    public static void main(String[] args) {
+
+
+        int[][] array = new int[4][4];
+
+        for (int i = 0; i < array.length; i++) {
+            var outer = array[i];
+
+            for (int j = 0; j < outer.length; j++) {
+                array[i][j] = (i * 10) + (j + 1);
+            }
+        }
+
+        System.out.println(Arrays.deepToString(array));
+
+        /*
+        array[1] = {10, 20, 30}; // Array initialiser cannot be used here
+        System.out.println(Arrays.deepToString(array));
+        */
+
+        array[1] = new int[] {10, 20, 30}; //Replaces second Array element to [10, 20, 30]
+        System.out.println(Arrays.deepToString(array));
+
+        Object[] anyArray = new Object[3];
+        System.out.println(Arrays.toString(anyArray)); // [null, null, null]
+
+        anyArray[0] = new String[] {"a", "b", "c"};
+        System.out.println(Arrays.deepToString(anyArray)); // [[a, b, c], null, null]
+
+        anyArray[1] = new String[][] {
+                {"1", "2"},
+                {"3", "4", "5"},
+                {"6", "7", "8", "9"}
+        };
+
+        System.out.println(Arrays.deepToString(anyArray)); // [[a, b, c], [[1, 2], [3, 4, 5], [6, 7, 8, 9]], null]
+
+        anyArray[2] = new int[2][2][2];
+        System.out.println(Arrays.deepToString(anyArray)); // [[a, b, c], [[1, 2], [3, 4, 5], [6, 7, 8, 9]], [[[0, 0], [0, 0]], [[0, 0], [0, 0]]]]
+
+
+        for (Object element: anyArray) {
+            System.out.printf("Element type = %s %n", element.getClass().getSimpleName());
+            System.out.printf("Element toString() = %s %n", element);
+            System.out.println(Arrays.deepToString((Object[]) element )); //Element casted to object Array type
+        }
+    }
+
+    }
+
+
+```
