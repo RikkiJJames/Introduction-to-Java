@@ -2354,3 +2354,18 @@ public class Main {
 
 
 ```
+
+## Section 9 - Containers
+
+### Lists
+
+There are other data structures that allow the modification of the number of elements in an Array as well as many other improvements.
+
+#### Array vs Lists
+
+An Array is mutable and the values in an Array can be set or changed. However, the size of the Array cannot be changed. Java has several other classes where items can be add, removed and the container can be resized. These classes are said to implement a Lists behaviour. List is a special type in Java called an Interface. Interfaces describe a set of method signitures that all List classes are expected to have.
+
+#### The ArrayList
+
+The ArrayList is a class that maintains an array in memory, that's actually bigger than what is needeed is most cases. It keeps track of the capacity - the actual size of the array. But it also keeps track of the elements that have been assigned or set- the size of the ArrayList. As elements are added to the ArrayList, its capacity needs to grow, this all happens behind the scenes, which is why the ArrayList is resizable.
+
