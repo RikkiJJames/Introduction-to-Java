@@ -2369,3 +2369,154 @@ An Array is mutable and the values in an Array can be set or changed. However, t
 
 The ArrayList is a class that maintains an array in memory, that's actually bigger than what is needeed is most cases. It keeps track of the capacity - the actual size of the array. But it also keeps track of the elements that have been assigned or set- the size of the ArrayList. As elements are added to the ArrayList, its capacity needs to grow, this all happens behind the scenes, which is why the ArrayList is resizable.
 
+```java
+import java.util.ArrayList;
+import java.util.Arrays;
+
+record GroceryItem(String name, String type, int count) {
+    public GroceryItem(String name) {
+        this(name,"DAIRY",1);
+    }
+
+    @Override
+    public String toString(){
+        return String.format("%d %s in %s", count, name.toUpperCase(), type);
+    }
+}
+public class Main {
+    public static void main(String[] args) {
+        GroceryItem[] groceryArray = new GroceryItem[3];
+        groceryArray[0] = new GroceryItem("milk");
+        groceryArray[1] = new GroceryItem("apples","PRODUCE",6);
+        groceryArray[2] = new GroceryItem("oranges", "PRODUCE", 5);
+
+        System.out.println(Arrays.toString(groceryArray));
+
+        ArrayList<GroceryItem> groceryList = new ArrayList<>();
+
+        groceryList.add(new GroceryItem("Butter"));
+        groceryList.add(new GroceryItem("Milk"));
+        groceryList.add(new GroceryItem("oranges", "PRODUCE", 5));
+        groceryList.add(0, new GroceryItem("apples", "PRODUCE", 6)); // add new element at specified index
+
+        System.out.println(groceryList);
+
+        groceryList.set(0, new GroceryItem("Bananas", "PRODUCE", 6)); // replace element at specified index
+        System.out.println(groceryList);
+
+        groceryList.remove(1); // Remove element at specified index
+        System.out.println(groceryList);
+    }
+}
+```
+
+Adding, Modifying, Accessing & Converting ArrayLists
+
+```java
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
+
+public class MoreLists {
+
+    public static void main(String[] args) {
+
+        String[] items = {"apples", "bananas", "milk", "eggs"};
+
+        List<String> list = List.of(items); // Transforms Array into List
+        System.out.println(list);
+
+        System.out.println(list.getClass().getName()); //Immutable List - java.util.ImmutableCollections$ListN
+        // list.add("yogurt"); Does not work as class is immutable
+
+        ArrayList<String> groceries = new ArrayList<>(list);
+        groceries.add("yogurt");
+        System.out.println(groceries);
+
+        ArrayList<String> newList = new ArrayList<>(
+                List.of("pickles", "mustard", "cheese")); //Adds list elements to ArrayList
+
+        System.out.println(newList);
+
+        groceries.addAll(newList); // Add other ArrayList elements
+        System.out.println(groceries);
+
+        System.out.println("Third item = " + groceries.get(2)); //Access ArrayList Elements
+
+        if (groceries.contains("mustard")) {
+            System.out.println("List contains mustard");
+        }
+
+        groceries.add("yogurt");
+        System.out.println("first = " + groceries.indexOf("yogurt"));
+        System.out.println("last = " + groceries.lastIndexOf("yogurt"));
+
+        System.out.println("Grocery List = " + groceries);
+        groceries.remove(1);
+        System.out.println("Grocery List = " + groceries); // 2nd element removed ("bananas")
+        groceries.remove("yogurt");
+        System.out.println("Grocery List = " + groceries); // first "yogurt" removes
+
+        groceries.add("apples");
+        groceries.removeAll(List.of("apples", "eggs"));
+        System.out.println("Grocery List = " + groceries); // All apples and eggs removed
+
+        groceries.retainAll(List.of("apples", "milk", "mustard", "cheese")); // Only keeps elements in the List within the ArrayList
+        System.out.println(groceries);
+
+        groceries.clear(); // Empties ArrayList
+        System.out.println(groceries);
+        System.out.println("isEmpty = " + groceries.isEmpty());
+
+        groceries.addAll(List.of("apples", "milk", "mustard", "cheese"));
+        groceries.addAll(Arrays.asList("eggs", "pickles", "mustard", "ham"));
+        System.out.println(groceries);
+
+        groceries.sort(Comparator.naturalOrder()); // orders Strings alphabetically and number in size order
+        System.out.println(groceries);
+
+        groceries.sort(Comparator.reverseOrder()); // Reverses order
+        System.out.println(groceries);
+
+        var groceryArray = groceries.toArray(new String [groceries.size()]); // Converts ArrayList into Array
+        System.out.println(Arrays.toString(groceryArray));
+        
+        var groceryList = Arrays.asList(groceries); // Converts ArrayList into List
+        System.out.println(groceryList);
+    }
+}
+
+```
+
+##### Multi-dimensional ArrayLists
+
+A multi-dimensional ArrayList simply has a type, which in itself is an ArrayList and then instantiating each element as an ArrayList.
+
+```java
+import java.util.ArrayList;
+
+public class MultiDimensionalArrayList {
+
+    public static void main(String[] args) {
+
+        int size = 3;
+        ArrayList<ArrayList<Integer>> coordinates = new ArrayList<>(size);
+
+        for (int i = 0; i < size; i++) {
+            coordinates.add(new ArrayList<>());
+        }
+
+        coordinates.get(0).add(1);
+        coordinates.get(1).add(2);
+        coordinates.get(2).add(0);
+
+        coordinates.get(1).add(0);
+        coordinates.get(2).add(1);
+        coordinates.get(0).add(2);
+
+        System.out.println(coordinates); // [[1, 2], [2, 0], [0, 1]]
+    }
+}
+
+```
