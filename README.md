@@ -2520,3 +2520,183 @@ public class MultiDimensionalArrayList {
 }
 
 ```
+
+#### LinkedLists
+
+Whereas an ArrayList is implemented on top of an Array, a LinkedList is a doubly linked list. Both implement all of List's methods, but the LinkedList also implements the Queue and Stack methods aswell.
+
+##### Queue
+
+A queue is a FIFO (First-in, First-Out) data collection. To remove an item, the queue is polled to get the first element in line. To add an item, it's offered onto the queue and sent to the back of the line. Single-ended queues always process elements from the start of the queue. However, a double-ended queue allows access to bother the start and end of the queue. A LinkedList can be used as a double ended queue.
+
+##### Stack
+
+A Stack is a LIFO (Last-in, First-Out) Data collection. When an item is added, it is pushed onto the stack. To get an item, the top item is removed (popped) from the stack. A LinkedList can also be used as a Stack.
+
+###### Adding & Removing Elements
+
+Examples on how to add and remove elements can be seen below:
+
+```java
+import java.util.LinkedList;
+
+public class Main {
+    public static void main(String[] args) {
+
+
+        LinkedList<String> placesToVisit = new LinkedList<>();
+
+        placesToVisit.add("Birmingham");
+        placesToVisit.add(0, "London");
+        System.out.println(placesToVisit);
+
+        addMoreElements(placesToVisit);
+        System.out.println(placesToVisit);
+
+        removeElements(placesToVisit);
+        System.out.println(placesToVisit);
+
+    }
+
+    private static void addMoreElements (LinkedList<String> list) {
+        list.addFirst("Leamington Spa");
+        list.addLast("Brighton");
+
+        // Queue methods
+        list.offer("Sheffield"); // Adds the specified element as the tail (last element) of this list.
+        list.offerFirst("Manchester"); // Inserts the specified element at the front of this list.
+        list.offerLast("Blackpool"); // Adds the specified element as the tail (last element) of this list.
+
+        // Stack methods
+        list.push("Coventry"); // Pushes an element onto the stack represented by this list. In other words, inserts the element at the front of this list.
+    }
+
+    private static void removeElements(LinkedList<String> list) {
+        list.remove(4);  // Removes Birmingham
+        list.remove("London");
+
+        System.out.println(list);
+
+        String s1 = list.remove(); // Removes first element
+        System.out.println(s1 + " was removed");
+
+        String s2 = list.removeFirst(); // Removes first element
+        System.out.println(s2 + " was removed");
+
+        String s3 = list.removeLast(); // Removes last element
+        System.out.println(s3 + " was removed");
+
+        // Queue/Deque poll methods
+
+        String p1 = list.poll(); //Removes first element
+        System.out.println(p1 + " was removed");
+
+        String p2 = list.pollFirst(); //Removes first element
+        System.out.println(p2 + " was removed");
+
+        String p3 = list.pollLast(); //Removes last element
+        System.out.println(p3 + " was removed");
+
+        // Stack methods
+        list.push("London"); // Adds element to queue
+        list.push("Leamington Spa");
+        list.push("Rugby");
+
+        System.out.println(list);
+
+        String p4 = list.pop(); //Removes first element
+        System.out.println(p4 + " was removed");
+    }
+}
+```
+
+###### Accessing Elements
+
+Methods to access LinkedList elements can be seen below:
+
+```java
+import java.util.LinkedList;
+import java.util.ListIterator;
+
+public class Main {
+    public static void main(String[] args) {
+
+
+        LinkedList<String> placesToVisit = new LinkedList<>();
+
+        placesToVisit.add("Birmingham");
+        placesToVisit.add(0, "London");
+        System.out.println(placesToVisit);
+
+        addMoreElements(placesToVisit);
+        System.out.println(placesToVisit);
+
+        placesToVisit.add("London");
+        gettingElements(placesToVisit);
+
+        printItinerary3(placesToVisit);
+    }
+
+    private static void gettingElements(LinkedList<String> list) {
+
+        System.out.println("Retrieved Element = " + list.get(4));
+        System.out.println("First Element = " + list.getFirst());
+        System.out.println("Last Element = " + list.getLast());
+
+        System.out.println("Leamington Spa is at position " + list.indexOf("Leamington Spa"));
+        System.out.println("London is at position " + list.lastIndexOf("London"));
+
+        // Queue retrieval method
+
+        System.out.println("Element from element() = " + list.element());
+
+        // Stack retrieval methods
+
+        System.out.println("Element from peek() = " + list.peek());
+        System.out.println("Element from peekFirst() = " + list.peekFirst());
+        System.out.println("Element from peekLast() = " + list.peekLast());
+    }
+
+    // Using for loop
+    public static void printItinerary(LinkedList<String> list) {
+        System.out.println("Trip starts at: " + list.getFirst());
+
+        for (int i = 1; i < list.size(); i++) {
+            System.out.println("--> From: " + list.get(i - 1) + " to " + list.get(i));
+        }
+        System.out.println("Trip ends at: " + list.getLast());
+    }
+    
+    // Using enhanced for loop 
+    public static void printItinerary2(LinkedList<String> list) {
+        System.out.println("Trip starts at: " + list.getFirst());
+
+        String previousTown = list.getFirst();
+
+        for (String town: list) {
+            System.out.println("--> From: " + previousTown + " to " + town); //Prints first elements to first element
+            previousTown = town;
+        }
+        System.out.println("Trip ends at: " + list.getLast());
+    }
+    
+    // Using iterator
+    public static void printItinerary3(LinkedList<String> list) {
+        System.out.println("Trip starts at: " + list.getFirst());
+
+        String previousTown = list.getFirst();
+        ListIterator<String> iterator = list.listIterator(1);
+
+        while (iterator.hasNext()) {
+            var town = iterator.next();
+            System.out.println("--> From: " + previousTown + " to " + town); //Prints first elements to first element
+            previousTown = town;
+
+        }
+        System.out.println("Trip ends at: " + list.getLast());
+    }
+}
+```
+
+##### Iterators
+
