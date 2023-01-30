@@ -2700,3 +2700,592 @@ public class Main {
 
 ##### Iterators
 
+An Iterator is an object used to loop through collections.There are two types of iterators, the Iterator and the ListIterator.
+An Iterator can call the next() method to get the next element in the list. It can also used the hasNext() method to check if any elements remain to be processed.
+
+When an Iterator is created, it's position is before the first element. The first call to the next() method gets the first element, and moves the cursor position between the first and second elements.
+
+```java
+import java.util.LinkedList;
+import java.util.ListIterator;
+
+public class Main {
+    public static void main(String[] args) {
+
+
+        LinkedList<String> placesToVisit = new LinkedList<>();
+
+        placesToVisit.add("Birmingham");
+        placesToVisit.add(0, "London");
+        System.out.println(placesToVisit);
+
+        placesToVisit.add("London");
+
+        testIterator(placesToVisit);
+    }
+
+    
+    private static void testIterator(LinkedList<String> list) {
+
+        var iterator = list.iterator();
+
+        while (iterator.hasNext()) {
+            /*
+            if (iterator.next().equals("London")) { // Concurrent Modification Exception - cannot modify the list while looping through it
+                list.remove();
+            }
+            */
+
+            if (iterator.next().equals("London")) { // Removes if element is equal to London while looping
+                iterator.remove();
+            }
+        }
+
+        System.out.println(list);
+    }
+}
+```
+
+An Iterator is forwards only, and only supports the remove() method. A ListIterator can be used to go both forwards and backwards, and in addition to the remove method, also supports the add() and set() methods. The method above has been rewritten with a listIterator.
+
+```java
+private static void testIterator(LinkedList<String> list) {
+
+        var iterator = list.listIterator();
+
+        while (iterator.hasNext()) {
+            /*
+            if (iterator.next().equals("London")) { // Concurrent Modification Exception - cannot modify the list while looping through it
+                list.remove();
+            }
+            */
+
+            if (iterator.next().equals("London")) { // Removes if element is equal to London while looping
+                iterator.add("Kent"); // listIterator can add and set elements
+            }
+        }
+
+        while (iterator.hasNext()) {
+            System.out.println(iterator.next()); // Doesn't print anything as iterator.hasNext() = false.
+        }
+
+        while (iterator.hasPrevious()) {
+            System.out.println(iterator.previous()); // Traverse the list backwards
+        }
+        System.out.println(list);
+
+        var iterator2 = list.listIterator(3); // Places iterator between index 2 & 3
+        System.out.println("Iterator 2 element = " + iterator2.next()); // prints index 3
+
+        var iterator3 = list.listIterator(3); // Places iterator between index 2 & 3
+        System.out.println("Iterator 3 element = " + iterator3.previous()); // print index 2
+    }
+```
+
+##### Autoboxing and Unboxing
+
+Classes like the ArrayList or LinkedList, do not support primitive data types, as the collection type.
+Therefore, the following cannot be done:
+
+```java
+LinkedList<int> integers = new LinkedList<>(); // Does not compile
+```
+
+However, Java gives wrapper classes for each primitive type. A primitive going to a wrapper is called boxing, and a wrapper to a primitive is called unboxing. This can be done with ease in Java.
+
+Each wrapper has a static overloaded factor method, valueOf() which takes a primite, and returns an instance of the wrapper class.
+
+```java
+Integer boxedInt = Integer.valueOf(15); // returns Integer instance
+```
+
+Another way of boxing is by creating a new instance of the wrapper class using the new keyword. The primitive value is then passed to the constructor. 
+
+```java
+Integer boxedInt = new Integer(15); returns Integer instance
+```
+
+If this is done in IntelliJ, with a Java version greater than JDK-9, it will tell you this is deprecated code.
+
+* Deprecated code means it's older and may not be supported in the future.
+* The static factory valueof() is generally a better choice as it is likely to yield significantly better space and time performance.
+
+However, primitives rarely need to be boxed, as Java supports something called autoboxing.
+
+####### Autoboxing
+
+A primitive can be assigned to a wrapper variable as shown below:
+
+```java
+Integer boxedInt = 15;
+```
+
+This is actually preferred to manually boxing.
+
+Every wrapper class supports a method to return the primitive value it contains. This is called unboxing
+
+```java
+int unboxedInt = boxedInt.intValue();
+```
+
+Calling this function is called manual unboxing. However, like boxing it is unnecessary to do this manually.
+
+```java
+int unboxedInt = boxedInteger;
+```
+
+###### Array & List Autoboxing
+
+Autoboxing means that the primitive and wrapper class can be used interchangeably.
+
+```java
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+public class Main {
+    public static void main(String[] args) {
+
+
+        Integer[] wrapperArray = new Integer[5]; // Array of Integer wrapper class
+        wrapperArray[0] = 50;
+
+        System.out.println(Arrays.toString(wrapperArray)); // [50, null, null, null, null]
+        System.out.println(wrapperArray[0].getClass().getName()); // Class type java.lang.Integer
+
+        Character[] characterArray = {'a', 'b', 'c', 'd'};
+        System.out.println(Arrays.toString(characterArray)); // [a, b, c, d]
+        System.out.println(characterArray[0].getClass().getName()); // java.lang.Character
+
+        var ourList = getList(1, 2, 3, 4, 5); // ArrayList<Integer>
+        System.out.println(ourList);
+
+        var ourList2 = List.of(1,2,3,4,5); // List<Integer>
+        System.out.println(ourList2);
+    }
+
+    private static ArrayList<Integer> getList (int... varargs) {
+
+        ArrayList<Integer> aList = new ArrayList<>();
+
+        for (int i: varargs) {
+            aList.add(i);
+        }
+        return aList;
+    }
+
+    private static int returnAnInt(Integer i) { // Unboxes Integer to int return type
+        return i;
+    }
+
+    private static Integer returnAnInteger(int i) { // Boxes and returns an Integer
+        return i;
+    }
+
+}
+```
+
+#### Enumeration
+
+The enum type is Java's type to support enumeration. Java describes the enum type as a "special data type that contains predefined constants".
+An enum functions as an Array with known elements, that are not changeable and each element can be referred to by a constant name, instead of index position.
+
+An enum is it's simplest form, is described like a class, where the keyword 'enum', replaces the keyword 'class'. The UpperCamelCase is the preferred style. The identifiers are seperated by commas and by convension (constants) all uppercase labels.
+An example of an enum is shown below:
+
+```java
+public enum DaysOfTheWeek {
+    SUNDAY, MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY
+}
+```
+A enum is ordered, by the way the constants are declared. In the example above, SUNDAY is the first day of the week and SATURDAY is the last.
+
+Other examples could include:
+* Months in the year
+* Compass Directions
+
+
+Using the enum DaysOfTheWeek defined above, example use cases are shown below:
+
+```java
+import java.util.Random;
+
+public class Main {
+    public static void main(String[] args) {
+
+        DayOfTheWeek weekDay = DayOfTheWeek.TUES;
+        System.out.println("weekDay = " + weekDay);
+
+
+        for (int i = 0; i < 10; i++) {
+            weekDay = getRandomDay();
+            System.out.printf("Name is %s, Ordinal Value = %d%n", weekDay.name(), weekDay.ordinal()); // ordinal synonymous with index
+
+            if (weekDay == DayOfTheWeek.FRI) {
+                System.out.println("Found a Friday!!!");
+            }
+        }
+    }
+
+    public static DayOfTheWeek getRandomDay(){
+
+        int randomInteger = new Random().nextInt(7);
+        var allDays = DayOfTheWeek.values();
+
+        return allDays[randomInteger];
+    }
+}
+
+```
+
+###### enum In Switches
+
+```java
+import java.util.Random;
+
+public class Main {
+    public static void main(String[] args) {
+
+        DayOfTheWeek weekDay = DayOfTheWeek.TUES;
+        System.out.println("weekDay = " + weekDay);
+
+
+        for (int i = 0; i < 10; i++) {
+            weekDay = getRandomDay();
+
+            switchDayOfWeek(weekDay);
+        }
+    }
+
+    public static DayOfTheWeek getRandomDay(){
+
+        int randomInteger = new Random().nextInt(7);
+        var allDays = DayOfTheWeek.values();
+
+        return allDays[randomInteger];
+    }
+
+    public static void switchDayOfWeek (DayOfTheWeek weekDay) {
+
+        int weekDayInteger = weekDay.ordinal() + 1; // Puts weekDay through range of 1-7 instead of 0-6
+
+        switch(weekDay) {
+            case WED -> System.out.println("Wednesday is Day " + weekDayInteger);
+            case SAT -> System.out.println("Saturday is Day " + weekDayInteger);
+            default -> System.out.println(weekDay.name().charAt(0) +  weekDay.name()
+                            .substring(1).toLowerCase() + "day is Day " +
+                    weekDayInteger);
+        }
+    }
+}
+```
+
+###### enum Added Functionality
+
+```java
+class BurgerShop {
+
+    public static void main(String[]args){
+
+        for (Topping topping: Topping.values()) {
+            System.out.println(topping.name() + " : " + topping.getPrice());
+        }
+    }
+}
+
+public enum Topping {
+    MUSTARD,
+    PICKLES,
+    BACON,
+    CHEDDAR,
+    TOMATO;
+
+    public double getPrice() {
+
+        return switch (this) {
+            case BACON -> 1.5;
+            case CHEDDAR -> 1.0;
+            default -> 0.5;
+        };
+    }
+
+}
+```
+
+#### Collections Example
+
+Below is an example Theatre class that holds an ArrayList of Seats and allows them to be reserved or cancelled.
+
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+class Reservations {
+
+    public static void main(String[] args) {
+        Theatre theatre = new Theatre("Milfield Theatre", 10, 12);
+//        theatre.getSeats();
+
+        if (theatre.reserveSeat("H11")) {
+            System.out.println("Please pay");
+        } else {
+            System.out.println("Sorry, seat is taken");
+        }
+
+        if (theatre.reserveSeat("H11")) {
+            System.out.println("Please pay");
+        } else {
+            System.out.println("Sorry, seat is taken");
+        }
+    }
+}
+public class Theatre {
+
+    private final String theatreName;
+    private List<Seat> seats = new ArrayList<>();
+
+    public Theatre(String theatreName, int numRows, int seatsPerRow) {
+        this.theatreName = theatreName;
+
+        int lastRow = 'A' + (numRows - 1);
+
+        for (char row = 'A'; row <= lastRow; row++) {
+            for (int seatNum = 1; seatNum <= seatsPerRow; seatNum++) {
+                Seat seat = new Seat(row + String.format("%02d", seatNum)); // Pads rows so A1 would be written A01
+                seats.add(seat);
+            }
+        }
+
+    }
+    public String getTheatreName() {
+        return theatreName;
+    }
+
+    public boolean reserveSeat(String seatNumber) {
+        Seat requestedSeat = null;
+
+        for (Seat seat: seats) {
+            if (seat.getSeatNumber().equals(seatNumber)) {
+                requestedSeat = seat;
+                break;
+            }
+        }
+            if (requestedSeat == null) {
+                System.out.println("There is no seat " + seatNumber);
+                return false;
+            }
+            return requestedSeat.reserve();
+        }
+
+    public void getSeats() {
+        for (Seat seat: seats) {
+            System.out.println(seat.getSeatNumber());
+        }
+    }
+    private class Seat {
+        private final String seatNumber;
+        private boolean reserved = false;
+
+
+        public Seat(String seatNumber) {
+            this.seatNumber = seatNumber;
+        }
+
+        public boolean reserve() {
+            if (!this.reserved) {
+                this.reserved = true;
+                System.out.println("Seat " + seatNumber + " reserved");
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        public boolean cancel() {
+            if (this.reserved) {
+                this.reserved = false;
+                System.out.println("Reservation of seat " + seatNumber + " cancelled");
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        public String getSeatNumber() {
+            return seatNumber;
+        }
+    }
+}
+```
+
+##### Collections binarySearch
+
+The Collections interface contains Lists, Sets, Queues and Deques.
+The Collections interface comes with a built in binarySearch function. However, for this to work the data collection must be sorted and comparable. Therefore the Seat class is made to implement the Comparable Interface. and The compareTo() function overriden to compare seats by seatNumber. This significantly increases the search speed.
+
+```java
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+class Reservations {
+
+    public static void main(String[] args) {
+        Theatre theatre = new Theatre("Milfield Theatre", 10, 12);
+//        theatre.getSeats();
+
+        if (theatre.reserveSeat("H11")) {
+            System.out.println("Please pay");
+        } else {
+            System.out.println("Sorry, seat is taken");
+        }
+
+        if (theatre.reserveSeat("H11")) {
+            System.out.println("Please pay");
+        } else {
+            System.out.println("Sorry, seat is taken");
+        }
+    }
+}
+public class Theatre {
+
+    private final String theatreName;
+    private List<Seat> seats = new ArrayList<>();
+
+    public Theatre(String theatreName, int numRows, int seatsPerRow) {
+        this.theatreName = theatreName;
+
+        int lastRow = 'A' + (numRows - 1);
+
+        for (char row = 'A'; row <= lastRow; row++) {
+            for (int seatNum = 1; seatNum <= seatsPerRow; seatNum++) {
+                Seat seat = new Seat(row + String.format("%02d", seatNum)); // Pads rows so A1 would be written A01
+                seats.add(seat);
+            }
+        }
+
+    }
+    public String getTheatreName() {
+        return theatreName;
+    }
+
+    public boolean reserveSeat(String seatNumber) {
+        Seat requestedSeat = new Seat(seatNumber);
+        int foundSeat = Collections.binarySearch(seats, requestedSeat, null); // binarySearch function implemented
+
+        if (foundSeat >= 0) {
+            return seats.get(foundSeat).reserve();
+        } else {
+            System.out.println("There is no seat " + seatNumber);
+            return false;
+        }
+//        for (Seat seat: seats) {
+//            System.out.println(".");
+//            if (seat.getSeatNumber().equals(seatNumber)) {
+//                requestedSeat = seat;
+//                break;
+//            }
+//        }
+//            if (requestedSeat == null) {
+//                System.out.println("There is no seat " + seatNumber);
+//                return false;
+//            }
+//            return requestedSeat.reserve();
+        }
+
+    public void getSeats() {
+        for (Seat seat: seats) {
+            System.out.println(seat.getSeatNumber());
+        }
+    }
+    private class Seat implements Comparable<Seat>{
+        private final String seatNumber;
+        private boolean reserved = false;
+
+
+        public Seat(String seatNumber) {
+            this.seatNumber = seatNumber;
+        }
+
+        @Override
+        public int compareTo(Seat seat) {
+            return this.seatNumber.compareToIgnoreCase(seat.getSeatNumber()); //Allows sorting and binarySearch
+        }
+
+        public boolean reserve() {
+            if (!this.reserved) {
+                this.reserved = true;
+                System.out.println("Seat " + seatNumber + " reserved");
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        public boolean cancel() {
+            if (this.reserved) {
+                this.reserved = false;
+                System.out.println("Reservation of seat " + seatNumber + " cancelled");
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        public String getSeatNumber() {
+            return seatNumber;
+        }
+    }
+}
+```
+
+##### Collections List Methods
+
+You can reverse, copy and get the Minimum & Maximum elements in a list based on the compareTo() method
+
+```java
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+public class Main {
+    public static void main(String[] args) {
+
+        Theatre theatre = new Theatre("Milfield Theatre", 10, 12);
+//
+        List<Theatre.Seat> seatCopy = new ArrayList<>(theatre.seats); // Shallow Copy copies reference not a seperate list
+
+        printList(seatCopy);
+        seatCopy.get(1).reserve(); // Reserves Seat A02
+
+        if (theatre.reserveSeat("A02")) {
+            System.out.println("Please pay for A02");
+        } else {
+            System.out.println("Seat already reserved"); // Prints statement as seat was reserved in seatCopy
+        }
+
+        Collections.reverse(seatCopy);
+        System.out.println("Printing seatCopy reversed");
+        printList(seatCopy); // prints backwards
+        System.out.println("Printing theatre.seats");
+        printList(theatre.seats); //prints forwards
+        Collections.shuffle(seatCopy); // prints in psuedo random order
+        System.out.println("Printing seatCopy shuffled");
+
+        Theatre.Seat minSeat = Collections.min(seatCopy);
+        Theatre.Seat maxSeat = Collections.max(seatCopy);
+
+        System.out.println("Minimum seat number is " + minSeat.getSeatNumber());
+        System.out.println("Maximum seat number is " + maxSeat.getSeatNumber());
+    }
+
+    public static void printList(List<Theatre.Seat> list) {
+        for(Theatre.Seat seat : list) {
+            System.out.print(" " + seat.getSeatNumber());
+        }
+        System.out.println();
+        System.out.println("=".repeat(20));
+    }
+}
+
+```
